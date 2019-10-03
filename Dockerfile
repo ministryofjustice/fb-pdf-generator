@@ -10,7 +10,7 @@ ARG UID='1001'
 RUN addgroup -S appgroup && \
   adduser -u ${UID} -S appuser -G appgroup
 
-COPY Gemfile* .ruby-version ./
+COPY --chown=appuser:appgroup Gemfile Gemfile.lock .ruby-version ./
 
 RUN gem install bundler
 
