@@ -1,0 +1,30 @@
+require: rubocop-rspec
+
+AllCops:
+  Exclude:
+    - .bundle/**
+    - vendor/**/*
+    - bin/**
+    - db/schema.rb
+    - Guardfile
+    - config/environments/**
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context', 'let']
+
+Metrics/MethodLength:
+  Enabled: true
+  Exclude:
+    - db/**/*
