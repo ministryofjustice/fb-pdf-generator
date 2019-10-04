@@ -1,4 +1,7 @@
-version: 2
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@6.3.0
+
 jobs:
   test:
     docker:
@@ -18,3 +21,11 @@ workflows:
   test_and_deploy:
     jobs:
       - test
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ECR_ACCOUNT_URL
+          region: AWS_DEFAULT_REGION
+          repo: "formbuilder/fb-pdf-generator"
+          tag: "${CIRCLE_SHA1}"
+          filters:
+            branches:
+              only: master
