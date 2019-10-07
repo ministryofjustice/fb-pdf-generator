@@ -51,36 +51,36 @@ commands:
         default: KUBE_CLUSTER
     steps:
       - run:
-          name: set cluster (<< parameters.environment-name >>)
+          name: (<< parameters.environment-name >>) set cluster
           command: |
             kubectl config set-cluster << parameters.kube-cluster >> \
             --certificate-authority=<( echo ${<< parameters.kube-certificate-authority >>} | base64 -d) \
             --server=${<< parameters.kube-server >>}
       - run:
-          name: set credentials (<< parameters.environment-name >>)
+          name: (<< parameters.environment-name >>) set credentials
           command: |
             kubectl config set-credentials "circleci_<< parameters.environment-name >>" \
             --token=${<< parameters.kube-token >>}
       - run:
-          name: set context (<< parameters.environment-name >>)
+          name: (<< parameters.environment-name >>) set context
           command: |
             kubectl config set-context "circleci_<< parameters.environment-name >>" \
               --cluster=<< parameters.kube-cluster >> \
               --user="circleci_<< parameters.environment-name >>" \
               --namespace="formbuilder-platform-<< parameters.environment-name >>"
       - run:
-          name: use context (<< parameters.environment-name >>)
+          name: (<< parameters.environment-name >>) use context
           command: |
             kubectl config use-context "circleci_<< parameters.environment-name >>"
       - run:
-          name: generate deployment template for (<< parameters.environment-name >>)
+          name: (<< parameters.environment-name >>) generate deployment template for
           command: |
             helm template deploy/ \
               --set image_tag=<< parameters.git-tag>> \
               --set environmentName=<< parameters.environment-name >> \
               > /tmp/helm_deploy.yaml
       - run:
-          name: deploy template to cluster (<< parameters.environment-name >>)
+          name: (<< parameters.environment-name >>) deploy template to cluster
           command: |
             kubectl apply \
               -f /tmp/helm_deploy.yaml \
