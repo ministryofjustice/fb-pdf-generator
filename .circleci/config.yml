@@ -54,7 +54,7 @@ commands:
           name: set cluster (<< parameters.environment-name >>)
           command: |
             kubectl config set-cluster << parameters.kube-cluster >> \
-            --certificate-authority=<( echo ${<< parameters.kube-certificate-authority >>} | base64 -d) | base64 -d) \
+            --certificate-authority=<( echo ${<< parameters.kube-certificate-authority >>} | base64 -d) \
             --server=${<< parameters.kube-server >>}
       - run:
           name: set credentials (<< parameters.environment-name >>)
