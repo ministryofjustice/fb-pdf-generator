@@ -26,9 +26,6 @@ deploy_with_secrets() {
          --set environmentName=$environment_name \
          > $CONFIG_FILE
 
-    echo "---" >> $CONFIG_FILE
-    cat deploy-config/secrets/${environment_name}-secrets-values.yaml >> $CONFIG_FILE
-
     kubectl apply -f $CONFIG_FILE -n formbuilder-platform-$environment_name
 }
 
