@@ -20,7 +20,7 @@ commands:
     steps:
       - run:
           name: Clone secrets repo
-          command: git clone << parameters.repo-url >> ${<< parameters.repo-clone-directroy >>}
+          command: git clone << parameters.repo-url >> << parameters.repo-clone-directroy >>
       - run:
           name: Decrypt secrets
           command: cd deploy-config && git-crypt unlock <( echo ${<< parameters.key >>} | base64 -d)
