@@ -9,14 +9,18 @@ commands:
       repo-url:
         type: string
         default: git@github.com:ministryofjustice/fb-pdf-generator-deploy.git
+        description: 'git ssh url to clone i.e git@github.com:<MY-ORG>/<MY-REPO>.git'
+      repo-clone-directroy:
+        type: string
+        default: deploy-config
       key:
         type: env_var_name
         default: ENCODED_GIT_CRYPT_KEY
+        description: 'base64 encoded decryption key'
     steps:
       - run:
           name: Clone secrets repo
-          command: |
-            GIT_SSH_COMMAND='ssh -v -i ~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7 -o "IdentitiesOnly=yes"' git clone << parameters.repo-url >> deploy-config
+          command: git clone << parameters.repo-url >> ${<< parameters.repo-clone-directroy >>}
       - run:
           name: Decrypt secrets
           command: cd deploy-config && git-crypt unlock <( echo ${<< parameters.key >>} | base64 -d)
