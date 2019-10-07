@@ -16,8 +16,8 @@ spec:
     spec:
       serviceAccountName: "formbuilder-pdf-generator-{{ .Values.environmentName }}"
       containers:
-        - name: "fb-pdf-generator-api-{{ .Values.environmentName }}"
-          image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-pdf-generator:{{ .Values.circleSha1 }}"
+      - name: "fb-pdf-generator-api-{{ .Values.environmentName }}"
+        image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-pdf-generator:{{ .Values.circleSha1 }}"
         securityContext:
           runAsUser: 1001
         imagePullPolicy: Always
