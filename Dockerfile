@@ -25,4 +25,4 @@ ENV RAILS_ENV=$RAILS_ENV
 ENV APP_PORT 3000
 EXPOSE $APP_PORT
 
-CMD bundle exec rake db:migrate && bundle exec rails s -p ${APP_PORT} --binding=0.0.0.0
+CMD bundle exec bundle exec rails s -p ${APP_PORT} --binding=0.0.0.0
