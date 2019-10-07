@@ -53,8 +53,9 @@ commands:
       - run:
           name: (<< parameters.environment-name >>) set cluster
           command: |
+            echo -n ${<< parameters.kube-certificate-authority >>} | base64 -d > .kube_certificate_authority
             kubectl config set-cluster << parameters.kube-cluster >> \
-            --certificate-authority=<( echo ${<< parameters.kube-certificate-authority >>} | base64 -d) \
+            --certificate-authority=".kube_certificate_authority" \
             --server=${<< parameters.kube-server >>}
       - run:
           name: (<< parameters.environment-name >>) set credentials
@@ -133,9 +134,9 @@ workflows:
           region: AWS_DEFAULT_REGION
           repo: "formbuilder/fb-pdf-generator"
           tag: "${CIRCLE_SHA1}"
-           filters:
-             branches:
-               only:
+          filters:
+            branches:
+              only:
                 - master
                 - deploy-to-test
       - deploy_to_test:
