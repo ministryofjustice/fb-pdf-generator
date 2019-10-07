@@ -16,7 +16,7 @@ commands:
         description: 'base64 encoded decryption key'
       ssh-key-path:
         type: string
-        default: '~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7'
+        description: 'path to ssh key that will be used'
       repo-clone-directroy:
         type: string
         default: deploy-config
@@ -30,7 +30,61 @@ commands:
           command: |
             cd deploy-config
             git-crypt unlock <( echo ${<< parameters.git-crypt-key >>} | base64 -d)
-
+  deploy-env:
+    description: "deploys app to kubernetes namespace (requires kubctl and helm installed)"
+    parameters:
+      git-tag:
+        type: string
+        description: 'image tag that will be deployed'
+      environment-name:
+        type: string
+      kube-token:
+        type: env_var_name
+      kube-certificate-authority:
+        type: env_var_name
+        default: KUBE_CERTIFICATE_AUTHORITY
+      kube-server:
+        type: env_var_name
+        default: KUBE_SERVER
+      kube-cluster:
+        type: env_var_name
+        default: KUBE_CLUSTER
+    steps:
+      - run:
+          name: set << parameters.environment-name >> cluster
+          command: |
+            kubectl config set-cluster << parameters.kube-cluster >> \
+            --certificate-authority=<( echo ${<< parameters.kube-certificate-authority >>} | base64 -d) | base64 -d) \
+            --server=${<< parameters.kube-server >>}
+      - run:
+          name: set << parameters.environment-name >> credentials
+          command: |
+            kubectl config set-credentials "circleci_<< parameters.environment-name >>" \
+            --token=${<< parameters.kube-token >>}
+      - run:
+          name: set << parameters.environment-name >> context
+          command: |
+            kubectl config set-context "circleci_<< parameters.environment-name >>" \
+              --cluster=<< parameters.kube-cluster >> \
+              --user="circleci_<< parameters.environment-name >>" \
+              --namespace="formbuilder-platform-<< parameters.environment-name >>"
+      - run:
+          name: use << parameters.environment-name >> context
+          command: |
+            kubectl config use-context "circleci_<< parameters.environment-name >>"
+      - run:
+          name: generate deployment template for << parameters.environment-name >>
+          command: |
+            helm template deploy/ \
+              --set image_tag=<< parameters.git-tag>> \
+              --set environmentName=<< parameters.environment-name >> \
+              > /tmp/helm_deploy.yaml
+      - run:
+          name: deploy << parameters.environment-name >> template to cluster
+          command: |
+            kubectl apply \
+              -f /tmp/helm_deploy.yaml \
+              -n formbuilder-platform-<< parameters.environment-name >>
 jobs:
   test:
     docker:
@@ -54,17 +108,20 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "b4:5d:52:af:b2:58:87:f9:ae:f3:4b:1f:32:9f:91:d7"
-      - checkout-git-crypt
-      - run:
-          name: deploy to test dev
-          command: './deploy/scripts/circle_deploy.sh $CIRCLE_SHA1 "test-dev" $KUBE_TOKEN_TEST_DEV'
-      - run:
-          name: deploy to test staging
-          command: './deploy/scripts/circle_deploy.sh $CIRCLE_SHA1 "test-staging" $KUBE_TOKEN_TEST_STAGING'
-      - run:
-          name: deploy to test production
-          command: './deploy/scripts/circle_deploy.sh $CIRCLE_SHA1 "test-production" $KUBE_TOKEN_TEST_PRODUCTION'
-
+      - checkout-git-crypt:
+          ssh-key-path: '~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7'
+      - deploy-env:
+          environment-name: 'test-dev'
+          git-tag: '$CIRCLE_SHA1'
+          kube-token: KUBE_TOKEN_TEST_DEV
+      - deploy-env:
+          environment-name: 'test-staging'
+          git-tag: '$CIRCLE_SHA1'
+          kube-token: KUBE_TOKEN_TEST_STAGING
+      - deploy-env:
+          environment-name: 'test-production'
+          git-tag: '$CIRCLE_SHA1'
+          kube-token: KUBE_TOKEN_TEST_PRODUCTION
 workflows:
   version: 2
   test_and_deploy:
