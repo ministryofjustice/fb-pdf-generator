@@ -34,7 +34,7 @@ spec:
         # defined in config_map.yaml
         envFrom:
           - configMapRef:
-            name: fb-pdf-generator-api-env-{{ .Values.environmentName }}
+              name: fb-pdf-generator-api-env-{{ .Values.environmentName }}
         env:
           - name: SECRET_KEY_BASE
             valueFrom:
