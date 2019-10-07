@@ -133,9 +133,11 @@ workflows:
           region: AWS_DEFAULT_REGION
           repo: "formbuilder/fb-pdf-generator"
           tag: "${CIRCLE_SHA1}"
-          # filters:
-          #   branches:
-          #     only: master
+           filters:
+             branches:
+               only:
+                - master
+                - deploy-to-test
       - deploy_to_test:
           requires:
             - test
