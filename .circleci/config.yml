@@ -7,27 +7,26 @@ commands:
     description: "Downloads decrypts secrets using git crypt"
     parameters:
       repo-url:
-        type: string
-        default: git@github.com:ministryofjustice/fb-pdf-generator-deploy.git
+        type: env_var_name
+        default: GIT_CRYPT_SSH_REPO_URL
         description: 'git ssh url to clone i.e git@github.com:<MY-ORG>/<MY-REPO>.git'
-      ssh-key:
-        type: string
-        default: '~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7'
-      repo-clone-directroy:
-        type: string
-        default: deploy-config
       git-crypt-key:
         type: env_var_name
         default: ENCODED_GIT_CRYPT_KEY
         description: 'base64 encoded decryption key'
+      repo-clone-directroy:
+        type: string
+        default: deploy-config
     steps:
       - run:
           name: Clone secrets repo
           command: |
-            GIT_SSH_COMMAND='ssh -v -i << parameters.ssh-key >> -o "IdentitiesOnly=yes"' git clone << parameters.repo-url >> << parameters.repo-clone-directroy >>
+            GIT_SSH_COMMAND='ssh -v -i << parameters.ssh-key >> -o "IdentitiesOnly=yes"' git clone ${<< parameters.repo-url >>} << parameters.repo-clone-directroy >>
       - run:
           name: Decrypt secrets
-          command: cd deploy-config && git-crypt unlock <( echo ${<< parameters.git-crypt-key >>} | base64 -d)
+          command: |
+            cd deploy-config
+            git-crypt unlock <( echo ${<< parameters.git-crypt-key >>} | base64 -d)
 
 jobs:
   test:
