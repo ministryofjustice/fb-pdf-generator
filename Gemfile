@@ -5,6 +5,7 @@ ruby '2.6.4'
 
 gem 'puma', '~> 4.2'
 gem 'rails', '~> 6.0.0'
+gem 'pdfkit'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -12,6 +13,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop', '~> 0.75.0'
   gem 'rubocop-rspec', '~> 1.36'
+  gem 'pdf-reader'
 end
 
 group :development do
