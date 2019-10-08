@@ -1,6 +1,6 @@
 FROM ruby:2.6.4-alpine3.9
 
-RUN apk add build-base postgresql-contrib postgresql-dev bash tzdata wkhtmltopdf
+RUN apk add build-base postgresql-contrib postgresql-dev bash tzdata wkhtmltopdf less
 
 WORKDIR /app
 ENV HOME /app

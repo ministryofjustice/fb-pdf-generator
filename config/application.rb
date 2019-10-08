@@ -3,6 +3,7 @@ require_relative 'boot'
 require 'rails'
 require 'action_controller/railtie'
 require 'action_view/railtie'
+require 'pdfkit'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -21,6 +22,8 @@ module FbPdfGenerator
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
-    config.api_only = true
+    # config.api_only = true
+
+    config.middleware.use PDFKit::Middleware
   end
 end

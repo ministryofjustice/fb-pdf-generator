@@ -1,6 +1,6 @@
-class PdfGeneratorController < ActionController::API
+class PdfsController < ActionController::Base
   def create
-    html = '<html><head></head><body>hello</body></html>'
+    html = render_to_string(action: "show", layout: 'application')
     kit = PDFKit.new(html)
     pdf = kit.to_pdf
 
