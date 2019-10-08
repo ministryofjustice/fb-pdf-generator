@@ -24,19 +24,14 @@ module Gateway
     end
 
     def hmac_secret
-      Rails.logger.error('this is a stub auth!')
-      request_hmac_secret
-    end
-
-    private
-
-    attr_reader :service_slug
-
-    def request_hmac_secret
       response = self.class.get("/service/#{service_slug}")
       raise AuthenticationApiError, response unless response.success?
 
       response.fetch('token')
     end
+
+    private
+
+    attr_reader :service_slug
   end
 end
