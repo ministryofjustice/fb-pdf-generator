@@ -78,7 +78,7 @@ commands:
           command: |
             helm template deploy/ \
               --set image_tag=<< parameters.git-tag>> \
-              --set environmentName=<< parameters.environment-name >> \
+              --set environment_name=<< parameters.environment-name >> \
               > /tmp/helm_deploy.yaml
       - run:
           name: (<< parameters.environment-name >>) deploy template to cluster
@@ -113,11 +113,11 @@ jobs:
           ssh-key-path: '~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7'
       - deploy-env:
           environment-name: 'test-dev'
-          git-tag: '$CIRCLE_SHA1'
+          git-tag: "${CIRCLE_SHA1}"
           kube-token: KUBE_TOKEN_TEST_DEV
       - deploy-env:
           environment-name: 'test-staging'
-          git-tag: '$CIRCLE_SHA1'
+          git-tag: "${CIRCLE_SHA1}"
           kube-token: KUBE_TOKEN_TEST_STAGING
       - deploy-env:
           environment-name: 'test-production'

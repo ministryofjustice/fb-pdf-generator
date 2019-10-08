@@ -3,21 +3,21 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "fb-pdf-generator-api-{{ .Values.environmentName }}"
+  name: "fb-pdf-generator-api-{{ .Values.environment_name }}"
 spec:
   replicas: 2
   template:
     metadata:
       labels:
-        app: "fb-pdf-generator-api-{{ .Values.environmentName }}"
+        app: "fb-pdf-generator-api-{{ .Values.environment_name }}"
         appGroup: "fb-pdf-generator"
         fb-service-token-cache-access: "true"
         tier: "frontend"
     spec:
-      serviceAccountName: "formbuilder-pdf-generator-{{ .Values.environmentName }}"
+      serviceAccountName: "formbuilder-pdf-generator-{{ .Values.environment_name }}"
       containers:
-      - name: "fb-pdf-generator-api-{{ .Values.environmentName }}"
-        image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-pdf-generator:{{ .Values.circleSha1 }}"
+      - name: "fb-pdf-generator-api-{{ .Values.environment_name }}"
+        image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-pdf-generator:{{ .Values.image_tag }}"
         securityContext:
           runAsUser: 1001
         imagePullPolicy: Always
@@ -34,20 +34,20 @@ spec:
         # defined in config_map.yaml
         envFrom:
           - configMapRef:
-              name: fb-pdf-generator-api-env-{{ .Values.environmentName }}
+              name: fb-pdf-generator-api-env-{{ .Values.environment_name }}
         env:
           - name: SECRET_KEY_BASE
             valueFrom:
               secretKeyRef:
-                name: fb-pdf-generator-api-secrets-{{ .Values.environmentName }}
+                name: fb-pdf-generator-api-secrets-{{ .Values.environment_name }}
                 key: secret_key_base
           - name: SERVICE_TOKEN
             valueFrom:
               secretKeyRef:
-                name: fb-platform-datastore-token-{{ .Values.environmentName }}
+                name: fb-platform-datastore-token-{{ .Values.environment_name }}
                 key: token
           - name: SENTRY_DSN
             valueFrom:
               secretKeyRef:
-                name: fb-pdf-generator-api-secrets-{{ .Values.environmentName }}
+                name: fb-pdf-generator-api-secrets-{{ .Values.environment_name }}
                 key: sentry_dsn

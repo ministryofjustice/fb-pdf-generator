@@ -2,18 +2,18 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-submitter-to-access-pdf-generator
-  namespace: formbuilder-platform-{{ .Values.environmentName }}
+  namespace: formbuilder-platform-{{ .Values.environment_name }}
 spec:
   podSelector:
     matchLabels:
-      app: fb-pdf-generator-api-{{ .Values.environmentName }}
+      app: fb-pdf-generator-api-{{ .Values.environment_name }}
   policyTypes:
   - Ingress
   ingress:
   - from:
     - namespaceSelector:
         matchLabels:
-          name: formbuilder-platform-{{ .Values.environmentName }}
+          name: formbuilder-platform-{{ .Values.environment_name }}
     - podSelector:
         matchLabels:
           appGroup: fb-submitter
