@@ -19,7 +19,7 @@ commands:
         description: 'path to ssh key that will be used'
       repo-clone-directroy:
         type: string
-        default: deploy-config
+        default: /tmp/deploy-config
     steps:
       - run:
           name: Clone secrets repo
@@ -28,7 +28,7 @@ commands:
       - run:
           name: Decrypt secrets
           command: |
-            cd deploy-config
+            cd << parameters.repo-clone-directroy >>
             git-crypt unlock <( echo ${<< parameters.git-crypt-key >>} | base64 -d)
   deploy-env:
     description: "deploys app to kubernetes namespace (requires kubctl and helm installed)"
@@ -77,6 +77,7 @@ commands:
           name: (<< parameters.environment-name >>) generate deployment template for
           command: |
             helm template deploy/ \
+              -f /tmp/deploy-config/secrets/<< parameters.environment-name >>-secrets-values.yaml \
               --set image_tag=<< parameters.git-tag>> \
               --set environment_name=<< parameters.environment-name >> \
               > /tmp/helm_deploy.yaml
