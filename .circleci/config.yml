@@ -139,7 +139,6 @@ workflows:
             branches:
               only:
                 - master
-                - deploy-to-test
       - deploy_to_test:
           requires:
             - test
