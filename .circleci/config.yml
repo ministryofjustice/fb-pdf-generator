@@ -2,6 +2,91 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.3.0
 
+commands:
+  checkout-git-crypt:
+    description: "Downloads decrypts secrets using git crypt"
+    parameters:
+      repo-url:
+        type: env_var_name
+        default: GIT_CRYPT_SSH_REPO_URL
+        description: 'git ssh url to clone i.e git@github.com:<MY-ORG>/<MY-REPO>.git'
+      git-crypt-key:
+        type: env_var_name
+        default: ENCODED_GIT_CRYPT_KEY
+        description: 'base64 encoded decryption key'
+      ssh-key-path:
+        type: string
+        description: 'path to ssh key that will be used'
+      repo-clone-directroy:
+        type: string
+        default: /tmp/deploy-config
+    steps:
+      - run:
+          name: Clone secrets repo
+          command: |
+            GIT_SSH_COMMAND='ssh -v -i << parameters.ssh-key-path >> -o "IdentitiesOnly=yes"' git clone ${<< parameters.repo-url >>} << parameters.repo-clone-directroy >>
+      - run:
+          name: Decrypt secrets
+          command: |
+            cd << parameters.repo-clone-directroy >>
+            git-crypt unlock <( echo ${<< parameters.git-crypt-key >>} | base64 -d)
+  deploy-env:
+    description: "deploys app to kubernetes namespace (requires kubctl and helm installed)"
+    parameters:
+      git-tag:
+        type: string
+        description: 'image tag that will be deployed'
+      environment-name:
+        type: string
+      kube-token:
+        type: env_var_name
+      kube-certificate-authority:
+        type: env_var_name
+        default: KUBE_CERTIFICATE_AUTHORITY
+      kube-server:
+        type: env_var_name
+        default: KUBE_SERVER
+      kube-cluster:
+        type: env_var_name
+        default: KUBE_CLUSTER
+    steps:
+      - run:
+          name: (<< parameters.environment-name >>) set cluster
+          command: |
+            echo -n ${<< parameters.kube-certificate-authority >>} | base64 -d > .kube_certificate_authority
+            kubectl config set-cluster << parameters.kube-cluster >> \
+            --certificate-authority=".kube_certificate_authority" \
+            --server=${<< parameters.kube-server >>}
+      - run:
+          name: (<< parameters.environment-name >>) set credentials
+          command: |
+            kubectl config set-credentials "circleci_<< parameters.environment-name >>" \
+            --token=${<< parameters.kube-token >>}
+      - run:
+          name: (<< parameters.environment-name >>) set context
+          command: |
+            kubectl config set-context "circleci_<< parameters.environment-name >>" \
+              --cluster=<< parameters.kube-cluster >> \
+              --user="circleci_<< parameters.environment-name >>" \
+              --namespace="formbuilder-platform-<< parameters.environment-name >>"
+      - run:
+          name: (<< parameters.environment-name >>) use context
+          command: |
+            kubectl config use-context "circleci_<< parameters.environment-name >>"
+      - run:
+          name: (<< parameters.environment-name >>) generate deployment template for
+          command: |
+            helm template deploy/ \
+              -f /tmp/deploy-config/secrets/<< parameters.environment-name >>-secrets-values.yaml \
+              --set image_tag=<< parameters.git-tag>> \
+              --set environment_name=<< parameters.environment-name >> \
+              > /tmp/helm_deploy.yaml
+      - run:
+          name: (<< parameters.environment-name >>) deploy template to cluster
+          command: |
+            kubectl apply \
+              -f /tmp/helm_deploy.yaml \
+              -n formbuilder-platform-<< parameters.environment-name >>
 jobs:
   test:
     docker:
@@ -15,6 +100,78 @@ jobs:
       - run:
           name: lint
           command: docker-compose run --rm app rubocop
+  deploy_to_test:
+    working_directory: ~/circle/git/fb-pdf-generator
+    docker:
+      - image: asmega/fb-builder:latest
+    steps:
+      - checkout
+      - setup_remote_docker
+      - add_ssh_keys:
+          fingerprints:
+            - "b4:5d:52:af:b2:58:87:f9:ae:f3:4b:1f:32:9f:91:d7"
+      - checkout-git-crypt:
+          ssh-key-path: '~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7'
+      - deploy-env:
+          environment-name: 'test-dev'
+          git-tag: "${CIRCLE_SHA1}"
+          kube-token: KUBE_TOKEN_TEST_DEV
+      - deploy-env:
+          environment-name: 'test-staging'
+          git-tag: "${CIRCLE_SHA1}"
+          kube-token: KUBE_TOKEN_TEST_STAGING
+      - deploy-env:
+          environment-name: 'test-production'
+          git-tag: '$CIRCLE_SHA1'
+          kube-token: KUBE_TOKEN_TEST_PRODUCTION
+  deploy_to_integration:
+    working_directory: ~/circle/git/fb-pdf-generator
+    docker:
+      - image: asmega/fb-builder:latest
+    steps:
+      - checkout
+      - setup_remote_docker
+      - add_ssh_keys:
+          fingerprints:
+            - "b4:5d:52:af:b2:58:87:f9:ae:f3:4b:1f:32:9f:91:d7"
+      - checkout-git-crypt:
+          ssh-key-path: '~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7'
+      - deploy-env:
+          environment-name: 'integration-dev'
+          git-tag: "${CIRCLE_SHA1}"
+          kube-token: KUBE_TOKEN_INTEGRATION_DEV
+      - deploy-env:
+          environment-name: 'integration-staging'
+          git-tag: "${CIRCLE_SHA1}"
+          kube-token: KUBE_TOKEN_INTEGRATION_STAGING
+      - deploy-env:
+          environment-name: 'integration-production'
+          git-tag: '$CIRCLE_SHA1'
+          kube-token: KUBE_TOKEN_INTEGRATION_PRODUCTION
+  deploy_to_live:
+    working_directory: ~/circle/git/fb-pdf-generator
+    docker:
+      - image: asmega/fb-builder:latest
+    steps:
+      - checkout
+      - setup_remote_docker
+      - add_ssh_keys:
+          fingerprints:
+            - "b4:5d:52:af:b2:58:87:f9:ae:f3:4b:1f:32:9f:91:d7"
+      - checkout-git-crypt:
+          ssh-key-path: '~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7'
+      - deploy-env:
+          environment-name: 'live-dev'
+          git-tag: "${CIRCLE_SHA1}"
+          kube-token: KUBE_TOKEN_LIVE_DEV
+      - deploy-env:
+          environment-name: 'live-staging'
+          git-tag: "${CIRCLE_SHA1}"
+          kube-token: KUBE_TOKEN_LIVE_STAGING
+      - deploy-env:
+          environment-name: 'live-production'
+          git-tag: '$CIRCLE_SHA1'
+          kube-token: KUBE_TOKEN_LIVE_PRODUCTION
 
 workflows:
   version: 2
@@ -22,10 +179,56 @@ workflows:
     jobs:
       - test
       - aws-ecr/build-and-push-image:
+          name: build_test_image
           account-url: AWS_ECR_ACCOUNT_URL
           region: AWS_DEFAULT_REGION
           repo: "formbuilder/fb-pdf-generator"
           tag: "${CIRCLE_SHA1}"
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - deploy-to-test
+      - deploy_to_test:
+          requires:
+            - test
+            - build_test_image
+          filters:
+            branches:
+              only:
+                - master
+                - deploy-to-test
+      - confirm_integration_deploy:
+          type: approval
+          requires:
+            - deploy_to_test
+          filters:
+            branches:
+              only:
+                - master
+                - deploy-to-test
+      - deploy_to_integration:
+          requires:
+            - confirm_integration_deploy
+          filters:
+            branches:
+              only:
+                - master
+                - deploy-to-test
+      - confirm_live_deploy:
+          type: approval
+          requires:
+            - deploy_to_integration
+          filters:
+            branches:
+              only:
+                - master
+                - deploy-to-test
+      - deploy_to_live:
+          requires:
+            - confirm_live_deploy
+          filters:
+            branches:
+              only:
+                - master
+                - deploy-to-test

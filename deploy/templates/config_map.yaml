@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fb-pdf-generator-api-env-{{ .Values.environment_name }}
+  namespace: formbuilder-platform-{{ .Values.environment_name }}
+data:
+  RAILS_ENV: "production"
+  MAX_IAT_SKEW_SECONDS: "60"
+  SERVICE_TOKEN_CACHE_ROOT_URL: "http://fb-service-token-cache-svc-{{ .Values.environment_name }}/"
+  RAILS_LOG_TO_STDOUT: "true"
