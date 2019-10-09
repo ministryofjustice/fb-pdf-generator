@@ -1,23 +1,23 @@
-FROM ruby:2.6.4-alpine3.9
+FROM ruby:2.6.4
 
-RUN apk add build-base postgresql-contrib postgresql-dev bash tzdata
+RUN apt update
+RUN apt install build-essential tzdata
 
 WORKDIR /app
 ENV HOME /app
 
 ARG UID='1001'
 
-RUN addgroup -S appgroup && \
-  adduser -u ${UID} -S appuser -G appgroup
+RUN adduser --uid ${UID}  --disabled-password --gecos "" appuser
 
-COPY --chown=appuser:appgroup Gemfile Gemfile.lock .ruby-version ./
+COPY --chown=appuser:appuser Gemfile Gemfile.lock .ruby-version ./
 
 RUN gem install bundler
 
 ARG BUNDLE_ARGS='--without test development'
 RUN bundle install --no-cache ${BUNDLE_ARGS}
 
-COPY --chown=appuser:appgroup . .
+COPY --chown=appuser:appuser . .
 
 ARG RAILS_ENV='production'
 ENV RAILS_ENV=$RAILS_ENV

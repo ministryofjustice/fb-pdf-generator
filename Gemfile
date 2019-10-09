@@ -7,11 +7,15 @@ gem 'httparty', '~> 0.17.1'
 gem 'jwt', '~> 2.2'
 gem 'puma', '~> 4.2'
 gem 'rails', '~> 6.0.0'
+gem 'pdfkit'
+gem 'wkhtmltopdf-binary'
 gem 'sentry-raven', '~> 2.11'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pdf-reader'
+  gem 'pry'
   gem 'rspec-rails'
   gem 'rubocop', '~> 0.75.0'
   gem 'rubocop-rspec', '~> 1.36'
@@ -23,4 +27,8 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+group :test do
+  gem 'pdf-inspector', require: "pdf/inspector"
 end
