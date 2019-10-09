@@ -35,4 +35,6 @@ Rails.application.configure do
 
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
+  #
+  config.auth_endpoint = ENV.fetch('SERVICE_TOKEN_CACHE_ROOT_URL', "example.com/#{SecureRandom.alphanumeric(5)}/")
 end
