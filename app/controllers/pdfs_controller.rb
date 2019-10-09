@@ -7,6 +7,6 @@ class PdfsController < ActionController::Base
     pdf = kit.to_pdf
 
     send_data pdf, type: 'application/pdf',
-      disposition: "attachment; filename=receipt-#{params.fetch(:submission_id)}.pdf"
+                   disposition: "attachment; filename=receipt-#{params.fetch(:submission_id)}.pdf"
   end
 end

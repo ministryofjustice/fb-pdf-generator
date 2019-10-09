@@ -10,7 +10,7 @@ RSpec.shared_context 'when authentication required', when_authentication_require
     )
   end
 
-  let(:expected_url)  { "#{Rails.configuration.auth_endpoint}service/#{issuer_claim}" }
+  let(:expected_url) { "#{Rails.configuration.auth_endpoint}service/#{issuer_claim}" }
 
   let(:token_secret) { SecureRandom.alphanumeric(10) }
   let(:issuer_claim) { SecureRandom.alphanumeric(5)  }

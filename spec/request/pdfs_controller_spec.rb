@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe PdfsController, type: :request do
-
   include_context 'when authentication required' do
     let(:url) { '/v1/pdfs' }
 

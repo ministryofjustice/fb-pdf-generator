@@ -5,23 +5,23 @@ ruby '2.6.4'
 
 gem 'httparty', '~> 0.17.1'
 gem 'jwt', '~> 2.2'
+gem 'pdfkit'
 gem 'puma', '~> 4.2'
 gem 'rails', '~> 6.0.0'
-gem 'pdfkit'
-gem 'wkhtmltopdf-binary'
 gem 'sentry-raven', '~> 2.11'
+gem 'wkhtmltopdf-binary'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pdf-reader'
   gem 'pry'
+  gem 'pry-nav', '~> 0.3.0'
+  gem 'pry-remote', '~> 0.1.8'
   gem 'rspec-rails'
   gem 'rubocop', '~> 0.75.0'
   gem 'rubocop-rspec', '~> 1.36'
   gem 'webmock', '~> 3.7'
-  gem "pry-nav", "~> 0.3.0"
-  gem "pry-remote", "~> 0.1.8"
 end
 
 group :development do
@@ -32,5 +32,5 @@ group :development do
 end
 
 group :test do
-  gem 'pdf-inspector', require: "pdf/inspector"
+  gem 'pdf-inspector', require: 'pdf/inspector'
 end
