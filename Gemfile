@@ -7,6 +7,7 @@ gem 'httparty', '~> 0.17.1'
 gem 'jwt', '~> 2.2'
 gem 'puma', '~> 4.2'
 gem 'rails', '~> 6.0.0'
+gem 'sentry-raven', '~> 2.11'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
