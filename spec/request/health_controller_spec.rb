@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe HealthController, type: :request do
-  it 'can be requested' do
+  it 'can be requested without auth' do
     get '/health'
     expect(response).to be_successful
   end

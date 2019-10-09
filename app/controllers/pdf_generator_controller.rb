@@ -1,5 +1,5 @@
-class PdfGeneratorController < ActionController::API
+class PdfGeneratorController < ApplicationController
   def create
-    render json: { placeholder: true }, status: 201
+    render json: { placeholder: true }, status: 200
   end
 end
