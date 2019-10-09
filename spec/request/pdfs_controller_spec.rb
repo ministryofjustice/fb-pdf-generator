@@ -1,20 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe PdfsController, type: :request do
-  before do
-    post '/v1/pdfs', params: payload
-  end
 
   include_context 'when authentication required' do
     let(:url) { '/v1/pdfs' }
 
-    xit 'can be requested' do
-      post url, headers: auth_headers
+    before do
+      post url, params: payload, headers: auth_headers
+    end
+
+    it 'can be requested' do
       expect(response).to have_http_status(:ok)
     end
-  end
 
-  context 'with simple payload' do
     let(:payload) { { submission_id: 'd081415b-6bc6-4aab-b6f0-607b05bd44ee' } }
 
     it 'returns the correct Content-Type headers' do

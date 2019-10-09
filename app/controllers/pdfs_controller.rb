@@ -1,4 +1,6 @@
 class PdfsController < ActionController::Base
+  include Concerns::JwtAuthentication
+
   def create
     html = render_to_string(action: 'show')
     kit = PDFKit.new(html)
