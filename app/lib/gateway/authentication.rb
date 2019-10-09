@@ -17,14 +17,12 @@ module Gateway
     include HTTParty
     format :json
 
-    def initialize(token_api_base_url:, service_slug:)
+    def initialize(token_api_base_url:)
       self.class.base_uri token_api_base_url
-
-      @service_slug = service_slug
     end
 
-    def hmac_secret
-      response = self.class.get("/service/#{service_slug}")
+    def hmac_secret(issuer_claim:)
+      response = self.class.get("/service/#{issuer_claim}")
       raise AuthenticationApiError, response unless response.success?
 
       response.fetch('token')
