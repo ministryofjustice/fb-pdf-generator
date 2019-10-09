@@ -3,7 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.4'
 
-gem 'pg', '>= 0.18', '< 2.0'
+gem 'httparty', '~> 0.17.1'
+gem 'jwt', '~> 2.2'
 gem 'puma', '~> 4.2'
 gem 'rails', '~> 6.0.0'
 gem 'sentry-raven', '~> 2.11'
@@ -14,6 +15,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop', '~> 0.75.0'
   gem 'rubocop-rspec', '~> 1.36'
+  gem 'webmock', '~> 3.7'
 end
 
 group :development do

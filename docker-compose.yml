@@ -1,12 +1,6 @@
 version: '3.4'
 
 services:
-  db:
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
-      POSTGRES_DB: form_builder_pdf_generator
   app:
     build:
       context: .
@@ -19,9 +13,6 @@ services:
       - .:/app
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
     environment:
-      DATABASE_URL: "postgres://postgres:password@db/form_builder_pdf_generator"
       SENTRY_DSN: ''
     ports:
       - "3000:3000"
-    depends_on:
-      - db
