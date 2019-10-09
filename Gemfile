@@ -6,7 +6,7 @@ ruby '2.6.4'
 gem 'puma', '~> 4.2'
 gem 'rails', '~> 6.0.0'
 gem 'pdfkit'
-# gem 'wkhtmltopdf-binary'
+gem 'wkhtmltopdf-binary'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

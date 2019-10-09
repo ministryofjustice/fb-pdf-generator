@@ -1,8 +1,7 @@
 class PdfsController < ActionController::Base
   def create
-    html = render_to_string(action: "show", layout: false)
+    html = render_to_string(action: 'show')
     kit = PDFKit.new(html)
-    binding.pry
     pdf = kit.to_pdf
 
     send_data pdf, type: 'application/pdf',
