@@ -148,6 +148,30 @@ jobs:
           environment-name: 'integration-production'
           git-tag: '$CIRCLE_SHA1'
           kube-token: KUBE_TOKEN_INTEGRATION_PRODUCTION
+  deploy_to_live:
+    working_directory: ~/circle/git/fb-pdf-generator
+    docker:
+      - image: asmega/fb-builder:latest
+    steps:
+      - checkout
+      - setup_remote_docker
+      - add_ssh_keys:
+          fingerprints:
+            - "b4:5d:52:af:b2:58:87:f9:ae:f3:4b:1f:32:9f:91:d7"
+      - checkout-git-crypt:
+          ssh-key-path: '~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7'
+      - deploy-env:
+          environment-name: 'live-dev'
+          git-tag: "${CIRCLE_SHA1}"
+          kube-token: KUBE_TOKEN_LIVE_DEV
+      - deploy-env:
+          environment-name: 'live-staging'
+          git-tag: "${CIRCLE_SHA1}"
+          kube-token: KUBE_TOKEN_LIVE_STAGING
+      - deploy-env:
+          environment-name: 'live-production'
+          git-tag: '$CIRCLE_SHA1'
+          kube-token: KUBE_TOKEN_LIVE_PRODUCTION
 
 workflows:
   version: 2
@@ -186,6 +210,23 @@ workflows:
       - deploy_to_integration:
           requires:
             - confirm_integration_deploy
+          filters:
+            branches:
+              only:
+                - master
+                - deploy-to-test
+      - confirm_live_deploy:
+          type: approval
+          requires:
+            - deploy_to_integration
+          filters:
+            branches:
+              only:
+                - master
+                - deploy-to-test
+      - deploy_to_live:
+          requires:
+            - confirm_live_deploy
           filters:
             branches:
               only:
