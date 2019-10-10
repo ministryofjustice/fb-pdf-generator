@@ -89,9 +89,30 @@ RSpec.describe PdfsController, type: :request do
       expect(analysis.pages.size).to eq(1)
     end
 
-    it 'shows page number' do
+    it 'shows page number in right footer' do
       analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('1/1')
+    end
+
+    it 'shows page number in left footer' do
+      analysis = PDF::Inspector::Text.analyze response.body
+      expect(analysis.strings.join).to include('1786c427-246e-4bb7-90b9-a2e6cfae003f /')
+    end
+
+    context 'when time is set to 2019-10-10 15:43:54' do
+      before(:all) do
+        Timecop.freeze(Time.parse('2019-10-10 15:43:54 +0000'))
+      end
+
+      it 'shows date and time in left footer' do
+        analysis = PDF::Inspector::Text.analyze response.body
+        expect(analysis.strings.join).to include('10 Oct 2019 15:43:54 UTC')
+      end
+
+      after(:all) do
+        Timecop.return
+      end
+
     end
   end
 end
