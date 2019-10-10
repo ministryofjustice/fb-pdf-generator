@@ -2,9 +2,10 @@ class PdfsController < ActionController::Base
   include Concerns::JwtAuthentication
 
   def create
-    @heading = params[:pdf_heading]
-    @sub_heading = params[:pdf_subheading]
-    @sections = params[:sections]
+    @submission_id = params.fetch(:submission_id)
+    @heading = params.fetch(:pdf_heading)
+    @sub_heading = params.fetch(:pdf_subheading)
+    @sections = params.fetch(:sections)
 
     html = render_to_string(action: 'show')
     kit = PDFKit.new(html)

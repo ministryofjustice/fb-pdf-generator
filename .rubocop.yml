@@ -21,4 +21,4 @@ Metrics/LineLength:
   Enabled: false
 
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context', 'let']
+  ExcludedMethods: ['describe', 'context', 'let', 'include_context']
