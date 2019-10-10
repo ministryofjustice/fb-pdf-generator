@@ -9,14 +9,10 @@ class PdfsController < ActionController::Base
     @sections = payload.fetch(:sections)
 
     html = render_to_string(action: 'show')
-    kit = PDFKit.new(html)
-    pdf = kit.to_pdf
+    pdf = PDFKit.new(html).to_pdf
 
-    send_data(
-      pdf,
-      type: 'application/pdf',
-      disposition: "attachment; filename=receipt-#{payload.fetch(:submission_id)}.pdf"
-    )
+    send_data(pdf, type: 'application/pdf',
+                   disposition: "attachment; filename=receipt-#{payload.fetch(:submission_id)}.pdf")
   end
 
   private
