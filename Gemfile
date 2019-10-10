@@ -5,11 +5,11 @@ ruby '2.6.4'
 
 gem 'httparty', '~> 0.17.1'
 gem 'jwt', '~> 2.2'
-gem 'pdfkit'
+gem 'pdfkit', '~> 0.8.4'
 gem 'puma', '~> 4.2'
 gem 'rails', '~> 6.0.0'
 gem 'sentry-raven', '~> 2.11'
-gem 'wkhtmltopdf-binary'
+gem 'wkhtmltopdf-binary', '~> 0.12.4'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
