@@ -10,6 +10,8 @@ ARG UID='1001'
 
 RUN adduser --uid ${UID}  --disabled-password --gecos "" appuser
 
+RUN chown appuser:appuser /app
+
 COPY --chown=appuser:appuser Gemfile Gemfile.lock .ruby-version ./
 
 RUN gem install bundler

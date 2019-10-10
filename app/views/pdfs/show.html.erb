@@ -1,0 +1,24 @@
+<h2><%= @sub_heading %></h2>
+<h1><%= @heading %></h1>
+
+<% @sections.each do |section| %>
+  <% if section[:summary_heading] %>
+    <h2><%= section[:summary_heading] %><h2>
+    <hr>
+    <p><%= section[:heading] %></p>
+    <p></p>
+
+  <% else %>
+    <h2><%= section[:heading] %></h2>
+    <hr>
+    <p></p>
+  <% end %>
+
+  <% section[:questions].each do |question| %>
+    <p><%= question[:label] %>: <%= question[:answer] %></p>
+    <hr>
+    <p></p>
+  <% end %>
+<% end %>
+
+<%= render 'pdfs/footer' %>
