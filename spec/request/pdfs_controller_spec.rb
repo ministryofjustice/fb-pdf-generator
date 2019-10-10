@@ -104,15 +104,14 @@ RSpec.describe PdfsController, type: :request do
         Timecop.freeze(Time.parse('2019-10-10 15:43:54 +0000'))
       end
 
-      it 'shows date and time in left footer' do
-        analysis = PDF::Inspector::Text.analyze response.body
-        expect(analysis.strings.join).to include('10 Oct 2019 15:43:54 UTC')
-      end
-
       after(:all) do
         Timecop.return
       end
 
+      it 'shows date and time in left footer' do
+        analysis = PDF::Inspector::Text.analyze response.body
+        expect(analysis.strings.join).to include('10 Oct 2019 15:43:54 UTC')
+      end
     end
   end
 end

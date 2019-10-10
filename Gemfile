@@ -21,8 +21,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop', '~> 0.75.0'
   gem 'rubocop-rspec', '~> 1.36'
+  gem 'timecop', '~> 0.9.1'
   gem 'webmock', '~> 3.7'
-  gem "timecop", "~> 0.9.1"
 end
 
 group :development do
