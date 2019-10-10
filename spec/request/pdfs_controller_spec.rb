@@ -12,7 +12,45 @@ RSpec.describe PdfsController, type: :request do
       expect(response).to have_http_status(:ok)
     end
 
-    let(:payload) { { submission_id: 'd081415b-6bc6-4aab-b6f0-607b05bd44ee' } }
+    let(:payload) do
+      {
+        submission_id: '1786c427-246e-4bb7-90b9-a2e6cfae003f / Tue, 08 Oct 2019 12:44:33 GMT',
+        pdf_heading: 'Complain about a court or tribunal',
+        pdf_subheading: 'A copy of your complaint for your records',
+        sections: [
+          {
+            heading: 'What is the name you wish to appear on your certificate',
+            summary_heading: 'Your Name',
+            questions: [
+              {
+                label: 'First name',
+                answer: 'Bob'
+              },
+              {
+                label: 'Last name',
+                answer: 'Smith'
+              }
+            ]
+          }, {
+            heading: 'Contact Details',
+            summary_heading: '',
+            questions: [
+              {
+                label: 'Your email address',
+                answer: 'bob.smith@gov.uk'
+              }, {
+
+                label: 'Your complaint',
+                answer: 'tester content'
+              }, {
+                label: 'Court or tribunal your complaint is about',
+                answer: 'Aberdeen Employment Tribunal'
+              }
+            ]
+          }
+        ]
+      }
+    end
 
     it 'returns the correct Content-Type headers' do
       expect(response.headers['Content-Type']).to include('application/pdf')
@@ -26,9 +64,19 @@ RSpec.describe PdfsController, type: :request do
       expect(response.headers['Content-Disposition']).to include("attachment; filename=receipt-#{payload[:submission_id]}.pdf")
     end
 
-    it 'returns a hello world pdf' do
+    it 'includes the answers in the pdf' do
       analysis = PDF::Inspector::Text.analyze response.body
-      expect(analysis.strings.join).to include('Hello world')
+      expect(analysis.strings.join).to include('First name: Bob')
+    end
+
+    it 'includes the headers in the pdf' do
+      analysis = PDF::Inspector::Text.analyze response.body
+      expect(analysis.strings.join).to include('Complain about a court or tribunal')
+    end
+
+    it 'includes the summary heading when present' do
+      analysis = PDF::Inspector::Text.analyze response.body
+      expect(analysis.strings.join).to include('Your Name')
     end
   end
 end

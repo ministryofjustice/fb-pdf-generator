@@ -1,0 +1,11 @@
+<%= @sub_heading %>
+<%= @heading %>
+
+<% @sections.each do |section| %>
+  <%= section[:summary_heading] %>
+  <%= section[:heading] %>
+  
+  <% section[:questions].each do |question| %>
+    <%= question[:label] %>: <%= question[:answer] %>
+  <% end %>
+<% end %>
