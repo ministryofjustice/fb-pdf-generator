@@ -1,5 +1,5 @@
 class PdfsController < ActionController::Base
-  include Concerns::JwtAuthentication
+  include JwtAuthentication
 
   def create
     html = render_to_string(action: 'show')
