@@ -83,5 +83,15 @@ RSpec.describe PdfsController, type: :request do
       analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include(payload[:submission_id])
     end
+
+    it 'creates a 1 page document' do
+      analysis = PDF::Inspector::Page.analyze(response.body)
+      expect(analysis.pages.size).to eq(1)
+    end
+
+    it 'shows page number' do
+      analysis = PDF::Inspector::Text.analyze response.body
+      expect(analysis.strings.join).to include('1/1')
+    end
   end
 end
