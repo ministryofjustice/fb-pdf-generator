@@ -5,7 +5,7 @@ RSpec.describe PdfsController, type: :request do
     let(:url) { '/v1/pdfs' }
 
     before do
-      post url, params: payload, headers: auth_headers
+      post url, params: payload.to_json, headers: auth_headers
     end
 
     it 'can be requested' do
