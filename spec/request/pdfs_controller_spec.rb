@@ -5,7 +5,12 @@ RSpec.describe PdfsController, type: :request do
     let(:url) { '/v1/pdfs' }
 
     before do
+      Timecop.freeze(Time.parse('2019-10-10 15:43:54 +0000'))
       post url, params: payload.to_json, headers: auth_headers
+    end
+
+    after do
+      Timecop.return
     end
 
     it 'can be requested' do
@@ -82,6 +87,26 @@ RSpec.describe PdfsController, type: :request do
     it 'includes the id' do
       analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include(payload[:submission_id])
+    end
+
+    it 'creates a 1 page document' do
+      analysis = PDF::Inspector::Page.analyze(response.body)
+      expect(analysis.pages.size).to eq(1)
+    end
+
+    it 'shows page number in right footer' do
+      analysis = PDF::Inspector::Text.analyze response.body
+      expect(analysis.strings.join).to include('1/1')
+    end
+
+    it 'shows page number in left footer' do
+      analysis = PDF::Inspector::Text.analyze response.body
+      expect(analysis.strings.join).to include('1786c427-246e-4bb7-90b9-a2e6cfae003f /')
+    end
+
+    it 'shows date and time in left footer' do
+      analysis = PDF::Inspector::Text.analyze response.body
+      expect(analysis.strings.join).to include('10 Oct 2019 15:43:54 UTC')
     end
   end
 end
