@@ -13,7 +13,6 @@ class PdfsController < ActionController::Base
 
     html = render_to_string(action: 'show')
     kit = PDFKit.new(html, footer_left: left_footer(submission_id))
-    kit.to_file('/app/pdf.pdf')
     pdf = kit.to_pdf
 
     send_data(pdf, type: 'application/pdf', disposition: "attachment; filename=receipt-#{submission_id}.pdf")
