@@ -1,0 +1,20 @@
+body {
+  font: normal 17px Liberation Sans, sans-serif;
+}
+h1 {
+  font-size: 35px;
+}
+h2 {
+  font-size: 20px;
+}
+.subheading {
+  font-size: 25px;
+  color: gray;
+  font-weight: lighter;
+}
+.question {
+  font-weight: bold;
+}
+hr.dark {
+  border: 1px solid black;
+}

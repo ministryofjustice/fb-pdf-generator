@@ -38,7 +38,6 @@ RSpec.describe PdfsController, type: :request do
             ]
           }, {
             heading: 'Contact Details',
-            summary_heading: '',
             questions: [
               {
                 label: 'Your email address',
