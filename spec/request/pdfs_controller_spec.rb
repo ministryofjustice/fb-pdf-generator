@@ -100,11 +100,11 @@ RSpec.describe PdfsController, type: :request do
     end
 
     context 'when time is set to 2019-10-10 15:43:54' do
-      before(:all) do
+      before do
         Timecop.freeze(Time.parse('2019-10-10 15:43:54 +0000'))
       end
 
-      after(:all) do
+      after do
         Timecop.return
       end
 
