@@ -56,6 +56,20 @@ RSpec.describe PdfsController, type: :request do
       }
     end
 
+    context 'without a subheading' do
+      let(:payload) do
+        {
+          submission_id: '1786c427-246e-4bb7-90b9-a2e6cfae003f',
+          pdf_heading: 'Complain about a court or tribunal',
+          sections: []
+        }
+      end
+
+      it 'subheading is optional' do
+        expect(response.body).to be_truthy
+      end
+    end
+
     it 'returns the correct Content-Type headers' do
       expect(response.headers['Content-Type']).to include('application/pdf')
     end
@@ -66,6 +80,11 @@ RSpec.describe PdfsController, type: :request do
 
     it 'contains the submission details' do
       expect(response.headers['Content-Disposition']).to include("attachment; filename=receipt-#{payload[:submission_id]}.pdf")
+    end
+
+    it 'includes subheading' do
+      analysis = PDF::Inspector::Text.analyze response.body
+      expect(analysis.strings.join).to include('A copy of your complaint for your records')
     end
 
     it 'includes the questions in the pdf' do

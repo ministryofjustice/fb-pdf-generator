@@ -8,7 +8,7 @@ class PdfsController < ActionController::Base
     submission_id = payload.fetch(:submission_id)
 
     @heading = payload.fetch(:pdf_heading)
-    @sub_heading = payload.fetch(:pdf_subheading)
+    @sub_heading = payload.fetch(:pdf_subheading, nil)
     @sections = payload.fetch(:sections)
 
     html = render_to_string(action: 'show')
