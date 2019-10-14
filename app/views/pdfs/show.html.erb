@@ -10,7 +10,7 @@
 
   <% @sections.each do |section| %>
     <% if section[:summary_heading] %>
-      <h2><%= section[:summary_heading] %>
+      <h2><%= section[:summary_heading] %></h2>
         <hr class="dark">
         <h2><%= section[:heading] %></h2>
 
@@ -19,15 +19,14 @@
       <hr class="dark">
     <% end %>
 
+    <table>
     <% section[:questions].each do |question| %>
-      <div>
-        <span class="question">
-          <%= question[:label] %>:
-        </span>
-        <%= question[:answer] %>
-       </div>
-      <hr>
+        <tr>
+          <td class="question"><%= question[:label] %></td>
+          <td><%= question[:answer] %></td>
+        </tr>
     <% end %>
+    </table>
   <% end %>
 <% end %>
 <%= render template: "layouts/application" %>
