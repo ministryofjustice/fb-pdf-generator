@@ -1,5 +1,6 @@
 body {
   font: normal 17px Liberation Sans, sans-serif;
+  color: #0C0D0D;
 }
 h1 {
   font-size: 35px;
@@ -12,9 +13,26 @@ h2 {
   color: gray;
   font-weight: lighter;
 }
-.question {
-  font-weight: bold;
-}
 hr.dark {
   border: 1px solid black;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+tr {
+  border-bottom:1px solid #B1B4B6;
+}
+tr:last-child {
+  border-bottom: none;
+}
+th, td {
+  padding: 15px 0px 15px 0px;
+  text-align: left;
+}
+td.question {
+  font-weight: bold;
+  width: 30%;
+  word-wrap: break-word
 }

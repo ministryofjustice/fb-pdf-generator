@@ -68,9 +68,14 @@ RSpec.describe PdfsController, type: :request do
       expect(response.headers['Content-Disposition']).to include("attachment; filename=receipt-#{payload[:submission_id]}.pdf")
     end
 
+    it 'includes the questions in the pdf' do
+      analysis = PDF::Inspector::Text.analyze response.body
+      expect(analysis.strings.join).to include('First name')
+    end
+
     it 'includes the answers in the pdf' do
       analysis = PDF::Inspector::Text.analyze response.body
-      expect(analysis.strings.join).to include('First name: Bob')
+      expect(analysis.strings.join).to include('Bob')
     end
 
     it 'includes the headers in the pdf' do
