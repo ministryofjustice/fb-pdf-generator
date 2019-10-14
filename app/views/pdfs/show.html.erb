@@ -1,22 +1,33 @@
-<h2><%= @sub_heading %></h2>
-<h1><%= @heading %></h1>
+<% content_for :head do %>
+  <style type="text/css">
+    <%= render 'pdfs/pdf_style.css.erb' %>
+  </style>
+<% end %>
 
-<% @sections.each do |section| %>
-  <% if section[:summary_heading] %>
-    <h2><%= section[:summary_heading] %><h2>
-    <hr>
-    <p><%= section[:heading] %></p>
-    <p></p>
+<% content_for :body do %>
+  <h2 class="subheading"><%= @sub_heading %></h2>
+  <h1><%= @heading %></h1>
 
-  <% else %>
-    <h2><%= section[:heading] %></h2>
-    <hr>
-    <p></p>
-  <% end %>
+  <% @sections.each do |section| %>
+    <% if section[:summary_heading] %>
+      <h2><%= section[:summary_heading] %>
+        <hr class="dark">
+        <h2><%= section[:heading] %></h2>
 
-  <% section[:questions].each do |question| %>
-    <p><%= question[:label] %>: <%= question[:answer] %></p>
-    <hr>
-    <p></p>
+    <% else %>
+      <h2><%= section[:heading] %></h2>
+      <hr class="dark">
+    <% end %>
+
+    <% section[:questions].each do |question| %>
+      <div>
+        <span class="question">
+          <%= question[:label] %>:
+        </span>
+        <%= question[:answer] %>
+       </div>
+      <hr>
+    <% end %>
   <% end %>
 <% end %>
+<%= render template: "layouts/application" %>
