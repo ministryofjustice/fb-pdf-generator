@@ -5,7 +5,9 @@
 <% end %>
 
 <% content_for :body do %>
-  <h2 class="subheading"><%= @sub_heading %></h2>
+  <% unless @sub_heading.nil? %>
+    <h2 class="subheading"><%= @sub_heading %></h2>
+  <% end %>
   <h1><%= @heading %></h1>
 
   <% @sections.each do |section| %>
