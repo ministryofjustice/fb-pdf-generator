@@ -29,13 +29,11 @@ RSpec.describe PdfsController, type: :request do
             questions: [
               {
                 label: 'First name',
-                answer: 'Bob',
-                human_value: 'Bob'
+                answer: 'Bob'
               },
               {
                 label: 'Last name',
-                answer: 'Smith',
-                human_value: 'Smith'
+                answer: 'Smith'
               }
             ]
           }, {
@@ -43,17 +41,14 @@ RSpec.describe PdfsController, type: :request do
             questions: [
               {
                 label: 'Your email address',
-                answer: 'bob.smith@gov.uk',
-                human_value: 'bob.smith@gov.uk'
+                answer: 'bob.smith@gov.uk'
               }, {
 
                 label: 'Your complaint',
-                answer: 'tester content',
-                human_value: 'tester content'
+                answer: 'tester content'
               }, {
                 label: 'Court or tribunal your complaint is about',
-                answer: '12345',
-                human_value: 'Aberdeen Employment Tribunal'
+                answer: 'Aberdeen Employment Tribunal'
               }
             ]
           }
@@ -100,16 +95,6 @@ RSpec.describe PdfsController, type: :request do
     it 'includes the answers in the pdf' do
       analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('Bob')
-    end
-
-    it 'includes the human values in the pdf' do
-      analysis = PDF::Inspector::Text.analyze response.body
-      expect(analysis.strings.join).to include('Aberdeen Employment Tribunal')
-    end
-
-    it 'excludes the machine values in the pdf' do
-      analysis = PDF::Inspector::Text.analyze response.body
-      expect(analysis.strings.join).not_to include('12345')
     end
 
     it 'includes the headers in the pdf' do
