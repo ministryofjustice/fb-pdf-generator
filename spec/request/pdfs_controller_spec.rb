@@ -61,6 +61,19 @@ RSpec.describe PdfsController, type: :request do
       }
     end
 
+    context 'without a heading or subheading' do
+      let(:payload) do
+        {
+          submission_id: '1786c427-246e-4bb7-90b9-a2e6cfae003f',
+          sections: []
+        }
+      end
+
+      it 'still generates the PDF' do
+        expect(response.body).to be_truthy
+      end
+    end
+
     context 'without a subheading' do
       let(:payload) do
         {
@@ -70,7 +83,7 @@ RSpec.describe PdfsController, type: :request do
         }
       end
 
-      it 'subheading is optional' do
+      it 'still generates the PDF' do
         expect(response.body).to be_truthy
       end
     end
