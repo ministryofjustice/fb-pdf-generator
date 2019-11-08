@@ -29,11 +29,13 @@ RSpec.describe PdfsController, type: :request do
             questions: [
               {
                 label: 'First name',
-                answer: 'Bob'
+                human_value: 'Bob',
+                answer: 'bob'
               },
               {
                 label: 'Last name',
-                answer: 'Smith'
+                human_value: 'Smith',
+                answer: 'smith'
               }
             ]
           }, {
@@ -41,10 +43,12 @@ RSpec.describe PdfsController, type: :request do
             questions: [
               {
                 label: 'Your email address',
+                human_value: 'bob.smith@gov.uk',
                 answer: 'bob.smith@gov.uk'
               }, {
 
                 label: 'Your complaint',
+                human_value: 'tester content',
                 answer: 'tester content'
               }, {
                 label: 'Court or tribunal your complaint is about',
