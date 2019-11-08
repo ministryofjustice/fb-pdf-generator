@@ -48,7 +48,8 @@ RSpec.describe PdfsController, type: :request do
                 answer: 'tester content'
               }, {
                 label: 'Court or tribunal your complaint is about',
-                answer: 'Aberdeen Employment Tribunal'
+                human_value: 'Aberdeen Employment Tribunal',
+                answer: '101'
               }
             ]
           }
@@ -92,7 +93,12 @@ RSpec.describe PdfsController, type: :request do
       expect(analysis.strings.join).to include('First name')
     end
 
-    it 'includes the answers in the pdf' do
+    it 'prefers the human readable answer' do
+      analysis = PDF::Inspector::Text.analyze response.body
+      expect(analysis.strings.join).to include('Aberdeen Employment Tribunal')
+    end
+
+    it 'fallbacks to the answers key in the pdf if human_value not defined' do
       analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('Bob')
     end
