@@ -7,7 +7,7 @@ class PdfsController < ActionController::Base
     payload = json_hash
     submission_id = payload.fetch(:submission_id)
 
-    @heading = payload.fetch(:pdf_heading)
+    @heading = payload.fetch(:pdf_heading, nil)
     @sub_heading = payload.fetch(:pdf_subheading, nil)
     @sections = payload.fetch(:sections)
 
