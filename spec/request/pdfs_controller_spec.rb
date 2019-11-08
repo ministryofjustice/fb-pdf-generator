@@ -69,7 +69,7 @@ RSpec.describe PdfsController, type: :request do
         }
       end
 
-      it 'subheading is optional' do
+      it 'still generates the PDF' do
         expect(response.body).to be_truthy
       end
     end
@@ -83,7 +83,7 @@ RSpec.describe PdfsController, type: :request do
         }
       end
 
-      it 'subheading is optional' do
+      it 'still generates the PDF' do
         expect(response.body).to be_truthy
       end
     end
