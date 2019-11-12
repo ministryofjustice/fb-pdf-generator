@@ -9,7 +9,7 @@ gem 'pdfkit', '~> 0.8.4'
 gem 'puma', '~> 4.3'
 gem 'rails', '~> 6.0.1'
 gem 'sentry-raven', '~> 2.12'
-gem 'wkhtmltopdf-binary', '~> 0.12.4'
+gem 'wkhtmltopdf-binary', '~> 0.12.5'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
