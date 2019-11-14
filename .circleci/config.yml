@@ -149,10 +149,22 @@ jobs:
           git-tag: '$CIRCLE_SHA1'
           kube-token: KUBE_TOKEN_LIVE_PRODUCTION
 
+  trigger_acceptance_tests:
+    docker:
+      - image: circleci/ruby:latest
+    steps:
+      - run:
+          name: "Trigger Acceptance Tests"
+          command: "curl -u ${CIRCLE_TOKEN}: -X POST https://circleci.com/api/v2/project/github/ministryofjustice/fb-acceptance-tests/pipeline -H 'Content-Type: application/json' -H 'Accept: application/json'"
+
 workflows:
   version: 2
   test_and_deploy:
     jobs:
+      - trigger_acceptance_tests:
+          filters:
+            branches:
+              only: master
       - test
       - aws-ecr/build-and-push-image:
           name: build_test_image
