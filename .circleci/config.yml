@@ -96,10 +96,10 @@ jobs:
       - setup_remote_docker
       - run:
           name: test
-          command: docker-compose run --rm app rspec
+          command: docker-compose run --rm app bundle exec rspec
       - run:
           name: lint
-          command: docker-compose run --rm app rubocop --cache false
+          command: docker-compose run --rm app bundle exec rubocop --cache false
   deploy_to_test:
     working_directory: ~/circle/git/fb-pdf-generator
     docker:
