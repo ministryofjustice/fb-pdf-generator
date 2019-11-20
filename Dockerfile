@@ -1,7 +1,9 @@
-FROM ruby:2.6.4
+#pinned to debian stretch(9) untill wkhtmltopdf-binary inclueds debian 10 (buster)
+FROM ruby:2.6.5-stretch
 
-RUN apt update
-RUN apt install build-essential tzdata
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update
+RUN apt-get install -y build-essential tzdata libjpeg62-turbo libpng16-16 libxrender1 libfontconfig1 libxext6
 
 WORKDIR /app
 ENV HOME /app
