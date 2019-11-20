@@ -1,4 +1,4 @@
-#pinned to debian stretch(9) untill wkhtmltopdf-binary inclueds debian 10 (buster)
+# Pinned to debian stretch(9) until wkhtmltopdf-binary includes debian 10 (buster)
 FROM ruby:2.6.5-stretch
 
 ENV DEBIAN_FRONTEND noninteractive
