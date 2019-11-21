@@ -117,10 +117,6 @@ jobs:
           git-tag: "${CIRCLE_SHA1}"
           kube-token: KUBE_TOKEN_TEST_DEV
       - deploy-env:
-          environment-name: 'test-staging'
-          git-tag: "${CIRCLE_SHA1}"
-          kube-token: KUBE_TOKEN_TEST_STAGING
-      - deploy-env:
           environment-name: 'test-production'
           git-tag: '$CIRCLE_SHA1'
           kube-token: KUBE_TOKEN_TEST_PRODUCTION
@@ -140,10 +136,6 @@ jobs:
           environment-name: 'live-dev'
           git-tag: "${CIRCLE_SHA1}"
           kube-token: KUBE_TOKEN_LIVE_DEV
-      - deploy-env:
-          environment-name: 'live-staging'
-          git-tag: "${CIRCLE_SHA1}"
-          kube-token: KUBE_TOKEN_LIVE_STAGING
       - deploy-env:
           environment-name: 'live-production'
           git-tag: '$CIRCLE_SHA1'
