@@ -7,7 +7,7 @@ gem 'httparty', '~> 0.17.1'
 gem 'jwt', '~> 2.2'
 gem 'pdfkit', '~> 0.8.4'
 gem 'puma', '~> 4.3'
-gem 'rails', '~> 6.0.1'
+gem 'rails', '~> 6.0.2'
 gem 'sentry-raven', '~> 2.12'
 gem 'wkhtmltopdf-binary', '~> 0.12.5'
 
