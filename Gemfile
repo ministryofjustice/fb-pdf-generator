@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.5'
 
-gem 'httparty', '~> 0.17.1'
+gem 'httparty', '~> 0.17.3'
 gem 'jwt', '~> 2.2'
 gem 'pdfkit', '~> 0.8.4'
 gem 'puma', '~> 4.3'
