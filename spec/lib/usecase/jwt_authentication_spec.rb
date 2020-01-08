@@ -4,17 +4,18 @@ require 'gateway/authentication'
 
 RSpec.describe Usecase::JwtAuthentication do
   let(:auth_gateway) { instance_spy(Gateway::Authentication) }
+  let(:algorithm) { 'HS256' }
 
   context 'when given no token' do
     it 'nil returns an exception' do
       expect do
-        described_class.new(auth_gateway: auth_gateway, token: nil).execute
+        described_class.new(auth_gateway: auth_gateway, token: nil, algorithm: algorithm).execute
       end.to raise_error(Usecase::JwtAuthentication::Exception::TokenNotPresentError)
     end
 
     it 'empty string returns an exception' do
       expect do
-        described_class.new(auth_gateway: auth_gateway, token: '').execute
+        described_class.new(auth_gateway: auth_gateway, token: '', algorithm: algorithm).execute
       end.to raise_error(Usecase::JwtAuthentication::Exception::TokenNotPresentError)
     end
   end
@@ -22,7 +23,7 @@ RSpec.describe Usecase::JwtAuthentication do
   context 'when given invalid token' do
     it 'returns an exception' do
       expect do
-        described_class.new(auth_gateway: auth_gateway, token: 'foo').execute
+        described_class.new(auth_gateway: auth_gateway, token: 'foo', algorithm: algorithm).execute
       end.to raise_error(Usecase::JwtAuthentication::Exception::TokenNotValidError)
     end
   end
@@ -46,23 +47,23 @@ RSpec.describe Usecase::JwtAuthentication do
 
       it 'returns an exception' do
         expect do
-          described_class.new(auth_gateway: auth_gateway, token: jwt_token).execute
+          described_class.new(auth_gateway: auth_gateway, token: jwt_token, algorithm: algorithm).execute
         end.to raise_error(Usecase::JwtAuthentication::Exception::TokenNotValidError).with_message('iss header must be present')
       end
     end
 
     it 'returns if there is no problem' do
-      expect { described_class.new(auth_gateway: auth_gateway, token: jwt_token).execute }.not_to raise_error
+      expect { described_class.new(auth_gateway: auth_gateway, token: jwt_token, algorithm: algorithm).execute }.not_to raise_error
     end
 
     it 'gets the hmac_secret from the auth gateway' do
-      described_class.new(auth_gateway: auth_gateway, token: jwt_token).execute
+      described_class.new(auth_gateway: auth_gateway, token: jwt_token, algorithm: algorithm).execute
 
       expect(auth_gateway).to have_received(:hmac_secret).once
     end
 
     it 'passes the Issuer Claim header to the gateway' do
-      described_class.new(auth_gateway: auth_gateway, token: jwt_token).execute
+      described_class.new(auth_gateway: auth_gateway, token: jwt_token, algorithm: algorithm).execute
 
       expect(auth_gateway).to have_received(:hmac_secret).with(issuer_claim: 'some_service').once
     end

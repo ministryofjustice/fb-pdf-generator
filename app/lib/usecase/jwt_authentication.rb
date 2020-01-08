@@ -5,9 +5,10 @@ module Usecase
       class TokenNotValidError < StandardError; end
     end
 
-    def initialize(auth_gateway:, token:)
+    def initialize(auth_gateway:, token:, algorithm:)
       @auth_gateway = auth_gateway
       @token = token
+      @algorithm = algorithm
     end
 
     def execute
@@ -23,14 +24,19 @@ module Usecase
     private
 
     def validate_token
-      issuer_claim = JWT.decode(token, key = nil, verify = false).last['iss'] # rubocop:disable Lint/UselessAssignment
       raise Exception::TokenNotValidError, 'iss header must be present' if issuer_claim.nil?
 
-      hmac_secret = auth_gateway.hmac_secret(issuer_claim: issuer_claim)
-
-      JWT.decode(token, hmac_secret, true, algorithm: 'HS256')
+      JWT.decode(token, hmac_secret, true, algorithm: algorithm)
     end
 
-    attr_reader :auth_gateway, :token
+    def hmac_secret
+      auth_gateway.hmac_secret(issuer_claim: issuer_claim)
+    end
+
+    def issuer_claim
+      @issuer_claim ||= JWT.decode(token, key = nil, verify = false).last['iss'] # rubocop:disable Lint/UselessAssignment
+    end
+
+    attr_reader :auth_gateway, :token, :algorithm
   end
 end
