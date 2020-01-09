@@ -12,7 +12,10 @@ module Gateway
       response = self.class.get("/service/v2/#{issuer_claim}")
       raise StandardError, response unless response.success?
 
-      OpenSSL::PKey::RSA.new(Base64.strict_decode64(response.body))
+      hash = JSON.parse(response.body)
+      token = hash['token']
+
+      OpenSSL::PKey::RSA.new(Base64.strict_decode64(token))
     end
 
     private

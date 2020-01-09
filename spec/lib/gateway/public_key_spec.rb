@@ -10,9 +10,15 @@ RSpec.describe Gateway::PublicKey do
   end
   let(:configuration) { instance_double('configuration', auth_endpoint: 'http://example.com') }
 
+  let(:json) do
+    {
+      token: encoded_public_key
+    }.to_json
+  end
+
   before do
     allow(Rails).to receive(:configuration).and_return(configuration)
-    WebMock.stub_request(:get, "#{Rails.configuration.auth_endpoint}/service/v2/#{service_slug}").to_return(status: 200, body: encoded_public_key)
+    WebMock.stub_request(:get, "#{Rails.configuration.auth_endpoint}/service/v2/#{service_slug}").to_return(status: 200, body: json)
   end
 
   it 'can get public key' do

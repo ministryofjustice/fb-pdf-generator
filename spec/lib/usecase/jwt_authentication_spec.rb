@@ -35,15 +35,17 @@ RSpec.describe Usecase::JwtAuthentication do
 
     let(:hmac_secret) { SecureRandom.alphanumeric(24) }
 
-    let(:jwt_token_payload) { { data: 'data', iat: Time.now.to_i } }
-    let(:jwt_token_headers) { { iss: 'some_service' } }
+    let(:jwt_token_payload) { { data: 'data', iat: Time.now.to_i, iss: 'some_service' } }
+    let(:jwt_token_headers) { {} }
 
     let(:jwt_token) do
       JWT.encode jwt_token_payload, hmac_secret, 'HS256', jwt_token_headers
     end
 
-    context 'without a iat header' do
-      let(:jwt_token_headers) { {} }
+    context 'without a iss header' do
+      before do
+        jwt_token_payload.delete(:iss)
+      end
 
       it 'returns an exception' do
         expect do
