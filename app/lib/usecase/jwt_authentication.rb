@@ -34,7 +34,7 @@ module Usecase
     end
 
     def issuer_claim
-      @issuer_claim ||= JWT.decode(token, key = nil, verify = false).last['iss'] # rubocop:disable Lint/UselessAssignment
+      @issuer_claim ||= JWT.decode(token, key = nil, verify = false).first['iss'] # rubocop:disable Lint/UselessAssignment
     end
 
     attr_reader :auth_gateway, :token, :algorithm
