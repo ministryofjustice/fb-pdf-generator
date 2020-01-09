@@ -1,4 +1,5 @@
 require 'httparty'
+
 module Gateway
   class Authentication
     class AuthenticationApiError < StandardError
