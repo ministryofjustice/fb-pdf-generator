@@ -1,5 +1,5 @@
 UID ?= $(shell id -u)
-COMPOSE = env UID=$(UID) docker-compose -f docker-compose.yml -f docker-compose.mount-volume.yml
+COMPOSE = env UID=$(UID) docker-compose -f docker-compose.yml
 
 .PHONY: docker-down
 docker-down:
