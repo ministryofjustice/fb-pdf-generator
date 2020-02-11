@@ -102,8 +102,11 @@ jobs:
           command: docker-compose run --rm app bundle exec rubocop --cache false
   deploy_to_test:
     working_directory: ~/circle/git/fb-pdf-generator
-    docker:
-      - image: asmega/fb-builder:latest
+    docker: &ecr_base_image
+      - image: $AWS_ECR_BASE_IMAGE_ACCOUNT_URL
+        aws_auth:
+          aws_access_key_id: $AWS_BASE_IMAGE_ACCESS_KEY_ID
+          aws_secret_access_key: $AWS_BASE_IMAGE_SECRET_ACCESS_KEY
     steps:
       - checkout
       - setup_remote_docker
@@ -122,8 +125,7 @@ jobs:
           kube-token: KUBE_TOKEN_TEST_PRODUCTION
   deploy_to_live:
     working_directory: ~/circle/git/fb-pdf-generator
-    docker:
-      - image: asmega/fb-builder:latest
+    docker: *ecr_base_image
     steps:
       - checkout
       - setup_remote_docker
