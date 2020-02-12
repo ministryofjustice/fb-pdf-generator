@@ -21,30 +21,14 @@ RSpec.describe ApplicationController, type: :controller do
     let(:issuer_claim) { 'some_other_api' }
 
     let(:token) do
-      JWT.encode({ data: 'hello!', iss: issuer_claim }, token_secret, 'HS256')
+      JWT.encode({ data: 'hello!', iss: issuer_claim }, token_secret, 'RS256')
     end
 
-    it 'rejects unauthorized when no token' do
-      post :create
-      expect(response).to have_http_status(:unauthorized)
-    end
-
-    it 'rejects forbidden when invalid token' do
-      request.headers['x-access-token'] = 'nonsence'
-      post :create
-      expect(response).to have_http_status(:forbidden)
-    end
-
-    it 'ok with token' do
-      request.headers['x-access-token'] = token
-      post :create
-      expect(response).to have_http_status(:ok)
-    end
-
-    it 'runs controller method with token' do
-      request.headers['x-access-token'] = token
-      post :create
-      expect(response.body).to eq({ allgood: true }.to_json)
+    context 'when no token' do
+      it 'rejects unauthorized when no token' do
+        post :create
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
 
     context 'when x-access-token-v2 provided' do
@@ -73,10 +57,22 @@ RSpec.describe ApplicationController, type: :controller do
         WebMock.stub_request(:get, "#{Rails.configuration.auth_endpoint}/service/v2/#{issuer_claim}").to_return(status: 200, body: json)
       end
 
-      it 'works' do
+      it 'rejects forbidden when invalid token' do
+        request.headers['x-access-token-v2'] = 'nonsense'
+        post :create
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      it 'ok with token' do
         request.headers['x-access-token-v2'] = access_token
         post :create
         expect(response).to have_http_status(:ok)
+      end
+
+      it 'runs controller method with token' do
+        request.headers['x-access-token-v2'] = access_token
+        post :create
+        expect(response.body).to eq({ allgood: true }.to_json)
       end
     end
   end
