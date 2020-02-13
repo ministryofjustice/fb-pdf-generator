@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/ministryofjustice/fb-pdf-generator/tree/master.svg?style=svg)](https://circleci.com/gh/ministryofjustice/fb-pdf-generator/tree/master)
+
 # Form Builder PDF generator
 
 ## To run via Docker
