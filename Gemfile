@@ -8,7 +8,7 @@ gem 'jwt', '~> 2.2'
 gem 'pdfkit', '~> 0.8.4'
 gem 'puma', '~> 4.3'
 gem 'rails', '~> 6.0.2'
-gem 'sentry-raven', '~> 2.13'
+gem 'sentry-raven', '~> 3.0'
 gem 'wkhtmltopdf-binary', '~> 0.12.5'
 
 group :development, :test do
