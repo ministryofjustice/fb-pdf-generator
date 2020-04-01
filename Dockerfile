@@ -1,5 +1,5 @@
 # Pinned to debian stretch(9) until wkhtmltopdf-binary includes debian 10 (buster)
-FROM ruby:2.6.5-stretch
+FROM ruby:2.6.6-stretch
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
