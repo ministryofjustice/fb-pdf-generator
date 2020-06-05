@@ -51,3 +51,8 @@ spec:
               secretKeyRef:
                 name: fb-pdf-generator-api-secrets-{{ .Values.environment_name }}
                 key: sentry_dsn
+          - name: METRICS_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fb-pdf-generator-api-secrets-{{ .Values.environment_name }}
+                key: metrics_access_key
