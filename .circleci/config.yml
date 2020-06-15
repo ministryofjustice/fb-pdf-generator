@@ -156,11 +156,13 @@ workflows:
   version: 2
   test_and_deploy:
     jobs:
+      - test
       - trigger_acceptance_tests:
+          requires:
+            - test
           filters:
             branches:
               only: master
-      - test
       - aws-ecr/build-and-push-image:
           name: build_test_image
           account-url: AWS_ECR_ACCOUNT_URL
