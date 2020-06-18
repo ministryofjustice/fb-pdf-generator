@@ -176,23 +176,26 @@ workflows:
   test_and_deploy:
     jobs:
       - test
-      - trigger_acceptance_tests:
-          requires:
-            - test
-          filters:
-            branches:
-              only: master
       - aws-ecr/build-and-push-image:
           name: build_test_image
           account-url: AWS_ECR_ACCOUNT_URL
           region: AWS_DEFAULT_REGION
           repo: "formbuilder/fb-pdf-generator"
           tag: "${CIRCLE_SHA1}"
+          requires:
+            - test
           filters:
             branches:
               only:
                 - master
                 - deploy-to-test
+      - trigger_acceptance_tests:
+          requires:
+            - test
+            - build_test_image
+          filters:
+            branches:
+              only: master
       - deploy_to_pentest:
           requires:
             - test
