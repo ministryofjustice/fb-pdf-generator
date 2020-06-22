@@ -1,11 +1,14 @@
 ---
 # web front-end
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: "fb-pdf-generator-api-{{ .Values.environment_name }}"
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app: "fb-pdf-generator-api-{{ .Values.environment_name }}"
   template:
     metadata:
       labels:
