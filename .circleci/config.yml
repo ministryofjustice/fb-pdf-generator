@@ -196,15 +196,6 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy_to_pentest:
-          requires:
-            - test
-            - build_test_image
-          filters:
-            branches:
-              only:
-                - master
-                - deploy-to-test
       - deploy_to_test:
           requires:
             - test
