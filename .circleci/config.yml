@@ -143,25 +143,6 @@ jobs:
           environment-name: 'live-production'
           git-tag: '$CIRCLE_SHA1'
           kube-token: KUBE_TOKEN_LIVE_PRODUCTION
-  deploy_to_pentest:
-    working_directory: ~/circle/git/fb-pdf-generator
-    docker: *ecr_base_image
-    steps:
-      - checkout
-      - setup_remote_docker
-      - add_ssh_keys:
-          fingerprints:
-            - "b4:5d:52:af:b2:58:87:f9:ae:f3:4b:1f:32:9f:91:d7"
-      - checkout-git-crypt:
-          ssh-key-path: '~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7'
-      - deploy-env:
-          environment-name: 'pentest-dev'
-          git-tag: "${CIRCLE_SHA1}"
-          kube-token: KUBE_TOKEN_PENTEST_DEV
-      - deploy-env:
-          environment-name: 'pentest-production'
-          git-tag: "${CIRCLE_SHA1}"
-          kube-token: KUBE_TOKEN_PENTEST_PRODUCTION
 
   trigger_acceptance_tests:
     docker:
