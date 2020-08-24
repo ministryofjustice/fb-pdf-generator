@@ -22,3 +22,6 @@ Metrics/LineLength:
 
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'let', 'include_context']
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
