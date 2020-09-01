@@ -1,9 +1,9 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: "fb-pdf-generator-api-svc-{{ .Values.environment_name }}"
+  name: "fb-pdf-generator-api-svc-{{ .Values.environmentName }}"
   labels:
-    app: "fb-pdf-generator-api-{{ .Values.environment_name }}"
+    app: "fb-pdf-generator-api-{{ .Values.environmentName }}"
     appGroup: "fb-pdf-generator"
 spec:
   ports:
@@ -11,4 +11,4 @@ spec:
     name: http
     targetPort: 3000
   selector:
-    app: "fb-pdf-generator-api-{{ .Values.environment_name }}"
+    app: "fb-pdf-generator-api-{{ .Values.environmentName }}"

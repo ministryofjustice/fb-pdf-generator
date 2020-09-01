@@ -9,12 +9,12 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-        #      - run:
-        #          name: test
-        #          command: docker-compose run --rm app bundle exec rspec
-        #      - run:
-        #          name: lint
-        #          command: docker-compose run --rm app bundle exec rubocop --cache false
+      - run:
+          name: test
+          command: docker-compose run --rm app bundle exec rspec
+      - run:
+          name: lint
+          command: docker-compose run --rm app bundle exec rubocop --cache false
   deploy_to_test:
     working_directory: ~/circle/git/fb-pdf-generator
     docker: &ecr_base_image
@@ -35,7 +35,7 @@ jobs:
             echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7" >> $BASH_ENV
       - run:
           name: cloning deploy scripts
-          command: 'git clone -b add-more-images-to-build git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
       - run:
           name: build and push docker images
           environment:
@@ -73,7 +73,7 @@ jobs:
             echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7" >> $BASH_ENV
       - run:
           name: cloning deploy scripts
-          command: 'git clone -b add-more-images-to-build git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
       - run:
           name: build and push docker images
           environment:
@@ -137,7 +137,6 @@ workflows:
               only:
                 - master
                 - deploy-to-test
-                - deploy/add-deploy-scripts
       - confirm_live_deploy:
           type: approval
           requires:
