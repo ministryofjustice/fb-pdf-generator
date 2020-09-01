@@ -2,92 +2,6 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.3.0
 
-commands:
-  checkout-git-crypt:
-    description: "Downloads decrypts secrets using git crypt"
-    parameters:
-      repo-url:
-        type: env_var_name
-        default: GIT_CRYPT_SSH_REPO_URL
-        description: 'git ssh url to clone i.e git@github.com:<MY-ORG>/<MY-REPO>.git'
-      git-crypt-key:
-        type: env_var_name
-        default: ENCODED_GIT_CRYPT_KEY
-        description: 'base64 encoded decryption key'
-      ssh-key-path:
-        type: string
-        description: 'path to ssh key that will be used'
-      repo-clone-directroy:
-        type: string
-        default: /tmp/deploy-config
-    steps:
-      - run:
-          name: Clone secrets repo
-          command: |
-            GIT_SSH_COMMAND='ssh -v -i << parameters.ssh-key-path >> -o "IdentitiesOnly=yes"' git clone ${<< parameters.repo-url >>} << parameters.repo-clone-directroy >>
-      - run:
-          name: Decrypt secrets
-          command: |
-            cd << parameters.repo-clone-directroy >>
-            git-crypt unlock <( echo ${<< parameters.git-crypt-key >>} | base64 -d)
-  deploy-env:
-    description: "deploys app to kubernetes namespace (requires kubctl and helm installed)"
-    parameters:
-      git-tag:
-        type: string
-        description: 'image tag that will be deployed'
-      environment-name:
-        type: string
-      kube-token:
-        type: env_var_name
-      kube-certificate-authority:
-        type: env_var_name
-        default: KUBE_CERTIFICATE_AUTHORITY
-      kube-server:
-        type: env_var_name
-        default: KUBE_SERVER
-      kube-cluster:
-        type: env_var_name
-        default: KUBE_CLUSTER
-    steps:
-      - run:
-          name: (<< parameters.environment-name >>) set cluster
-          command: |
-            echo -n ${<< parameters.kube-certificate-authority >>} | base64 -d > .kube_certificate_authority
-            kubectl config set-cluster << parameters.kube-cluster >> \
-            --certificate-authority=".kube_certificate_authority" \
-            --server=${<< parameters.kube-server >>}
-      - run:
-          name: (<< parameters.environment-name >>) set credentials
-          command: |
-            kubectl config set-credentials "circleci_<< parameters.environment-name >>" \
-            --token=${<< parameters.kube-token >>}
-      - run:
-          name: (<< parameters.environment-name >>) set context
-          command: |
-            kubectl config set-context "circleci_<< parameters.environment-name >>" \
-              --cluster=<< parameters.kube-cluster >> \
-              --user="circleci_<< parameters.environment-name >>" \
-              --namespace="formbuilder-platform-<< parameters.environment-name >>"
-      - run:
-          name: (<< parameters.environment-name >>) use context
-          command: |
-            kubectl config use-context "circleci_<< parameters.environment-name >>"
-      - run:
-          name: (<< parameters.environment-name >>) generate deployment template for
-          command: |
-            helm template deploy/ \
-              -f /tmp/deploy-config/secrets/<< parameters.environment-name >>-secrets-values.yaml \
-              -f /tmp/deploy-config/secrets/shared-secrets-values.yaml \
-              --set image_tag=<< parameters.git-tag>> \
-              --set environment_name=<< parameters.environment-name >> \
-              > /tmp/helm_deploy.yaml
-      - run:
-          name: (<< parameters.environment-name >>) deploy template to cluster
-          command: |
-            kubectl apply \
-              -f /tmp/helm_deploy.yaml \
-              -n formbuilder-platform-<< parameters.environment-name >>
 jobs:
   test:
     docker:
@@ -95,12 +9,12 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: test
-          command: docker-compose run --rm app bundle exec rspec
-      - run:
-          name: lint
-          command: docker-compose run --rm app bundle exec rubocop --cache false
+        #      - run:
+        #          name: test
+        #          command: docker-compose run --rm app bundle exec rspec
+        #      - run:
+        #          name: lint
+        #          command: docker-compose run --rm app bundle exec rubocop --cache false
   deploy_to_test:
     working_directory: ~/circle/git/fb-pdf-generator
     docker: &ecr_base_image
@@ -114,16 +28,35 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "b4:5d:52:af:b2:58:87:f9:ae:f3:4b:1f:32:9f:91:d7"
-      - checkout-git-crypt:
-          ssh-key-path: '~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7'
-      - deploy-env:
-          environment-name: 'test-dev'
-          git-tag: "${CIRCLE_SHA1}"
-          kube-token: KUBE_TOKEN_TEST_DEV
-      - deploy-env:
-          environment-name: 'test-production'
-          git-tag: '$CIRCLE_SHA1'
-          kube-token: KUBE_TOKEN_TEST_PRODUCTION
+      - run:
+          name: Setup base environment variable
+          command: |
+            echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
+            echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7" >> $BASH_ENV
+      - run:
+          name: cloning deploy scripts
+          command: 'git clone -b add-more-images-to-build git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+      - run:
+          name: build and push docker images
+          environment:
+            ENVIRONMENT_NAME: test
+          command: './deploy-scripts/bin/build'
+      - run:
+          name: deploy to test dev
+          environment:
+            APPLICATION_NAME: fb-pdf-generator
+            PLATFORM_ENV: test
+            DEPLOYMENT_ENV: dev
+            K8S_NAMESPACE: formbuilder-platform-test-dev
+          command: './deploy-scripts/bin/deploy'
+      - run:
+          name: deploy to test production
+          environment:
+            APPLICATION_NAME: fb-pdf-generator
+            PLATFORM_ENV: test
+            DEPLOYMENT_ENV: production
+            K8S_NAMESPACE: formbuilder-platform-test-production
+          command: './deploy-scripts/bin/deploy'
   deploy_to_live:
     working_directory: ~/circle/git/fb-pdf-generator
     docker: *ecr_base_image
@@ -133,17 +66,35 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "b4:5d:52:af:b2:58:87:f9:ae:f3:4b:1f:32:9f:91:d7"
-      - checkout-git-crypt:
-          ssh-key-path: '~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7'
-      - deploy-env:
-          environment-name: 'live-dev'
-          git-tag: "${CIRCLE_SHA1}"
-          kube-token: KUBE_TOKEN_LIVE_DEV
-      - deploy-env:
-          environment-name: 'live-production'
-          git-tag: '$CIRCLE_SHA1'
-          kube-token: KUBE_TOKEN_LIVE_PRODUCTION
-
+      - run:
+          name: Setup base environment variable
+          command: |
+            echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
+            echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7" >> $BASH_ENV
+      - run:
+          name: cloning deploy scripts
+          command: 'git clone -b add-more-images-to-build git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+      - run:
+          name: build and push docker images
+          environment:
+            ENVIRONMENT_NAME: live
+          command: './deploy-scripts/bin/build'
+      - run:
+          name: deploy to live dev
+          environment:
+            APPLICATION_NAME: fb-pdf-generator
+            PLATFORM_ENV: live
+            DEPLOYMENT_ENV: dev
+            K8S_NAMESPACE: formbuilder-platform-live-dev
+          command: './deploy-scripts/bin/deploy'
+      - run:
+          name: deploy to live production
+          environment:
+            APPLICATION_NAME: fb-pdf-generator
+            PLATFORM_ENV: live
+            DEPLOYMENT_ENV: production
+            K8S_NAMESPACE: formbuilder-platform-live-production
+          command: './deploy-scripts/bin/deploy'
   trigger_acceptance_tests:
     docker:
       - image: circleci/ruby:latest
@@ -186,6 +137,7 @@ workflows:
               only:
                 - master
                 - deploy-to-test
+                - deploy/add-deploy-scripts
       - confirm_live_deploy:
           type: approval
           requires:
