@@ -96,12 +96,18 @@ jobs:
             K8S_NAMESPACE: formbuilder-platform-live-production
           command: './deploy-scripts/bin/deploy'
   trigger_acceptance_tests:
-    docker:
-      - image: circleci/ruby:latest
+    working_directory: ~/circle/git/fb-pdf-generator
+    docker: *ecr_base_image
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "b4:5d:52:af:b2:58:87:f9:ae:f3:4b:1f:32:9f:91:d7"
+      - run:
+          name: cloning deploy scripts
+          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
       - run:
           name: "Trigger Acceptance Tests"
-          command: "curl -u ${CIRCLE_TOKEN}: -X POST https://circleci.com/api/v2/project/github/ministryofjustice/fb-acceptance-tests/pipeline -H 'Content-Type: application/json' -H 'Accept: application/json'"
+          command: './deploy-scripts/bin/acceptance_tests'
 
 workflows:
   version: 2
@@ -121,13 +127,6 @@ workflows:
               only:
                 - master
                 - deploy-to-test
-      - trigger_acceptance_tests:
-          requires:
-            - test
-            - build_test_image
-          filters:
-            branches:
-              only: master
       - deploy_to_test:
           requires:
             - test
@@ -137,10 +136,16 @@ workflows:
               only:
                 - master
                 - deploy-to-test
+      - trigger_acceptance_tests:
+          requires:
+            - deploy_to_test
+          filters:
+            branches:
+              only: master
       - confirm_live_deploy:
           type: approval
           requires:
-            - deploy_to_test
+            - trigger_acceptance_tests
           filters:
             branches:
               only:
