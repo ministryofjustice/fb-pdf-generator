@@ -35,7 +35,7 @@ jobs:
             echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7" >> $BASH_ENV
       - run:
           name: cloning deploy scripts
-          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+          command: 'git clone -b use-deployments-instead-of-image-name git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
       - run:
           name: build and push docker images
           environment:
@@ -104,7 +104,7 @@ jobs:
             - "b4:5d:52:af:b2:58:87:f9:ae:f3:4b:1f:32:9f:91:d7"
       - run:
           name: cloning deploy scripts
-          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+          command: 'git clone -b use-deployments-instead-of-image-name git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
       - run:
           name: "Trigger Acceptance Tests"
           command: './deploy-scripts/bin/acceptance_tests'
@@ -127,6 +127,7 @@ workflows:
               only:
                 - master
                 - deploy-to-test
+                - testing-deployments
       - deploy_to_test:
           requires:
             - test
@@ -136,6 +137,7 @@ workflows:
               only:
                 - master
                 - deploy-to-test
+                - testing-deployments
       - trigger_acceptance_tests:
           requires:
             - deploy_to_test
