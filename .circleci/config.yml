@@ -15,13 +15,13 @@ jobs:
       - run:
           name: lint
           command: docker-compose run --rm app bundle exec rubocop --cache false
-  deploy_to_test:
+  build_and_deploy_to_test:
     working_directory: ~/circle/git/fb-pdf-generator
     docker: &ecr_base_image
-      - image: $AWS_ECR_BASE_IMAGE_ACCOUNT_URL
+      - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
         aws_auth:
-          aws_access_key_id: $AWS_BASE_IMAGE_ACCESS_KEY_ID
-          aws_secret_access_key: $AWS_BASE_IMAGE_SECRET_ACCESS_KEY
+          aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
+          aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
     steps:
       - checkout
       - setup_remote_docker
@@ -57,7 +57,7 @@ jobs:
             DEPLOYMENT_ENV: production
             K8S_NAMESPACE: formbuilder-platform-test-production
           command: './deploy-scripts/bin/deploy'
-  deploy_to_live:
+  build_and_deploy_to_live:
     working_directory: ~/circle/git/fb-pdf-generator
     docker: *ecr_base_image
     steps:
@@ -114,23 +114,9 @@ workflows:
   test_and_deploy:
     jobs:
       - test
-      - aws-ecr/build-and-push-image:
-          name: build_test_image
-          account-url: AWS_ECR_ACCOUNT_URL
-          region: AWS_DEFAULT_REGION
-          repo: "formbuilder/fb-pdf-generator"
-          tag: "${CIRCLE_SHA1}"
+      - build_and_deploy_to_test:
           requires:
             - test
-          filters:
-            branches:
-              only:
-                - master
-                - deploy-to-test
-      - deploy_to_test:
-          requires:
-            - test
-            - build_test_image
           filters:
             branches:
               only:
@@ -138,7 +124,7 @@ workflows:
                 - deploy-to-test
       - trigger_acceptance_tests:
           requires:
-            - deploy_to_test
+            - build_and_deploy_to_test
           filters:
             branches:
               only: master
@@ -151,7 +137,7 @@ workflows:
               only:
                 - master
                 - deploy-to-test
-      - deploy_to_live:
+      - build_and_deploy_to_live:
           requires:
             - confirm_live_deploy
           filters:
