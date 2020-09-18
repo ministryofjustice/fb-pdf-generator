@@ -207,7 +207,7 @@ GEM
     ruby-progressbar (1.10.1)
     ruby-rc4 (0.1.5)
     safe_yaml (1.0.5)
-    sentry-raven (3.0.4)
+    sentry-raven (3.1.0)
       faraday (>= 1.0)
     slop (3.6.0)
     spring (2.1.1)
@@ -258,7 +258,7 @@ DEPENDENCIES
   rspec-rails
   rubocop (~> 0.91.0)
   rubocop-rspec (~> 1.43)
-  sentry-raven (~> 3.0)
+  sentry-raven (~> 3.1)
   spring
   spring-watcher-listen (~> 2.0.0)
   timecop (~> 0.9.1)
