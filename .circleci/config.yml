@@ -150,6 +150,3 @@ workflows:
               only:
                 - master
                 - deploy-to-test
-      - smoke_tests:
-          requires:
-            - build_and_deploy_to_live
