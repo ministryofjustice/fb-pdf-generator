@@ -1,17 +1,14 @@
 class PdfsController < ActionController::Base
   include JwtAuthentication
 
-  respond_to? :json
-
   def create
-    payload = json_hash
-    submission_id = payload.fetch(:submission_id)
+    submission_id = submission_params.fetch(:submission_id)
 
-    @heading = payload.fetch(:pdf_heading, nil)
-    @sub_heading = payload.fetch(:pdf_subheading, nil)
-    @sections = payload.fetch(:sections)
+    @heading = submission_params.fetch(:pdf_heading, nil)
+    @sub_heading = submission_params.fetch(:pdf_subheading, nil)
+    @sections = submission_params.fetch(:sections)
 
-    html = render_to_string(action: 'show')
+    html = render_to_string(action: 'show', formats: [:html])
     kit = PDFKit.new(html, footer_left: left_footer(submission_id))
     pdf = kit.to_pdf
 
@@ -24,7 +21,10 @@ class PdfsController < ActionController::Base
     "#{submission_id} / #{Time.now.strftime('%a, %d %b %Y %H:%M:%S')} #{Time.zone.name}"
   end
 
-  def json_hash
-    JSON.parse(request.raw_post, symbolize_names: true)
+  def submission_params
+    @submission_params ||= begin
+      params.permit!
+      params.to_hash.deep_symbolize_keys
+    end
   end
 end

@@ -6,7 +6,7 @@ RSpec.describe PdfsController, type: :request do
 
     before do
       Timecop.freeze(Time.parse('2019-10-10 15:43:54 +0000'))
-      post url, params: payload.to_json, headers: auth_headers
+      post url, params: payload, headers: auth_headers, as: :json
     end
 
     after do
@@ -49,7 +49,7 @@ RSpec.describe PdfsController, type: :request do
 
                 label: 'Your complaint',
                 human_value: 'tester content',
-                answer: 'tester content'
+                answer: 'testing answer with % character'
               }, {
                 label: 'Court or tribunal your complaint is about',
                 human_value: 'Aberdeen Employment Tribunal',
