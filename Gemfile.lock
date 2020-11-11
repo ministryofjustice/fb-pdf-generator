@@ -85,7 +85,7 @@ GEM
     keen (1.1.1)
       addressable (~> 2.5)
       multi_json (~> 1.12)
-    listen (3.2.1)
+    listen (3.3.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.7.0)
@@ -244,7 +244,7 @@ DEPENDENCIES
   byebug
   httparty (~> 0.18.1)
   jwt (~> 2.2)
-  listen (>= 3.0.5, < 3.3)
+  listen (>= 3.0.5, < 3.4)
   metrics_adapter (= 0.2.0)
   pdf-inspector
   pdf-reader
