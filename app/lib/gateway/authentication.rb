@@ -4,6 +4,7 @@ module Gateway
   class Authentication
     class AuthenticationApiError < StandardError
       attr_reader :response
+
       def initialize(response)
         super
         @response = response
