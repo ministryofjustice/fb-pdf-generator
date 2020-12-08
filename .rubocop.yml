@@ -25,3 +25,6 @@ Metrics/BlockLength:
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
+
+Layout/EmptyLineBetweenDefs:
+  Enabled: false
