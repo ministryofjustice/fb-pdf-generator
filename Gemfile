@@ -23,7 +23,7 @@ group :development, :test do
   gem 'rubocop', '~> 1.6.1'
   gem 'rubocop-rspec', '~> 2.1'
   gem 'timecop', '~> 0.9.2'
-  gem 'webmock', '~> 3.10'
+  gem 'webmock', '~> 3.11'
 end
 
 group :development do
