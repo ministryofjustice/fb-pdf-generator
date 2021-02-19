@@ -131,7 +131,7 @@ GEM
       hashery (~> 2.0)
       ruby-rc4
       ttfunk
-    pdfkit (0.8.4.1)
+    pdfkit (0.8.5)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -254,7 +254,7 @@ DEPENDENCIES
   metrics_adapter (= 0.2.0)
   pdf-inspector
   pdf-reader
-  pdfkit (~> 0.8.4)
+  pdfkit (~> 0.8.5)
   pry
   pry-nav (~> 0.3.0)
   pry-remote (~> 0.1.8)
