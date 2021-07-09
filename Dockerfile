@@ -1,4 +1,4 @@
-FROM ruby:2.7.3-buster
+FROM ruby:3.0.2-buster
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
