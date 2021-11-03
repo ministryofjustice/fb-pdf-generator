@@ -18,7 +18,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pdf-reader'
   gem 'pry'
-  gem 'pry-nav', '~> 0.3.0'
+  gem 'pry-nav', '~> 1.0.0'
   gem 'pry-remote', '~> 0.1.8'
   gem 'rspec-rails'
   gem 'rubocop', '~> 1.22.3'
