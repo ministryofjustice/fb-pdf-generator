@@ -203,7 +203,7 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.15.1)
       parser (>= 3.0.1.1)
-    rubocop-rspec (2.7.0)
+    rubocop-rspec (2.8.0)
       rubocop (~> 1.19)
     ruby-progressbar (1.11.0)
     ruby-rc4 (0.1.5)
@@ -262,7 +262,7 @@ DEPENDENCIES
   rails (~> 6.1.4.4)
   rspec-rails
   rubocop (~> 1.25.0)
-  rubocop-rspec (~> 2.7)
+  rubocop-rspec (~> 2.8)
   sentry-rails (~> 5.0.1)
   sentry-ruby (~> 5.0.1)
   spring
