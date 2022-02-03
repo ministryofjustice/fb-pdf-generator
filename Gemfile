@@ -10,7 +10,7 @@ gem 'pdfkit', '~> 0.8.4'
 gem 'puma', '~> 5.6'
 gem 'rails', '~> 6.1.4.4'
 gem 'sentry-rails', '~> 5.0.1'
-gem 'sentry-ruby', '~> 5.0.1'
+gem 'sentry-ruby', '~> 5.0.2'
 gem 'wkhtmltopdf-binary', '~> 0.12.6'
 
 group :development, :test do
