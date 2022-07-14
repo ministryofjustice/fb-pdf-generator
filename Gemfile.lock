@@ -85,7 +85,7 @@ GEM
     i18n (1.11.0)
       concurrent-ruby (~> 1.0)
     json (2.6.2)
-    jwt (2.3.0)
+    jwt (2.4.1)
     keen (1.1.1)
       addressable (~> 2.5)
       multi_json (~> 1.12)
@@ -251,7 +251,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   httparty (~> 0.20.0)
-  jwt (~> 2.3)
+  jwt (~> 2.4)
   listen (>= 3.0.5, < 3.8)
   metrics_adapter (= 0.2.0)
   pdf-inspector
