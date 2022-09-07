@@ -5,7 +5,6 @@ ruby '2.7.5'
 
 gem 'httparty', '~> 0.20.0'
 gem 'jwt', '~> 2.4'
-gem 'metrics_adapter', '0.2.0'
 gem 'pdfkit', '~> 0.8.6'
 gem 'puma', '~> 5.6.4'
 gem 'rails', '~> 6.1.6.1', '< 7.0.0'
