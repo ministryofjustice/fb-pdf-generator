@@ -9,8 +9,8 @@ gem 'metrics_adapter', '0.2.0'
 gem 'pdfkit', '~> 0.8.6'
 gem 'puma', '~> 5.6.5'
 gem 'rails', '~> 6.1.7', '< 7.0.0'
-gem 'sentry-rails', '~> 5.4.2'
-gem 'sentry-ruby', '~> 5.4.2'
+gem 'sentry-rails', '~> 5.5.0'
+gem 'sentry-ruby', '~> 5.5.0'
 gem 'wkhtmltopdf-binary', '~> 0.12.6'
 
 group :development, :test do
