@@ -227,7 +227,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     thor (1.2.1)
-    timecop (0.9.5)
+    timecop (0.9.6)
     ttfunk (1.7.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
@@ -266,7 +266,7 @@ DEPENDENCIES
   sentry-ruby (~> 5.5.0)
   spring
   spring-watcher-listen (~> 2.1.0)
-  timecop (~> 0.9.5)
+  timecop (~> 0.9.6)
   webmock (~> 3.18)
   wkhtmltopdf-binary (~> 0.12.6)
 
