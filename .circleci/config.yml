@@ -49,7 +49,7 @@ jobs:
           name: Setup base environment variable
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
-            echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_b45d52afb25887f9aef34b1f329f91d7" >> $BASH_ENV
+            echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_2f3b4f74743d1cb78ab5447542351831" >> $BASH_ENV
       - run: &deploy_scripts
           name: cloning deploy scripts
           command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
@@ -67,7 +67,7 @@ jobs:
       - setup_remote_docker: *remote_docker
       - add_ssh_keys: &ssh_keys
           fingerprints:
-            - "b4:5d:52:af:b2:58:87:f9:ae:f3:4b:1f:32:9f:91:d7"
+            - "2f:3b:4f:74:74:3d:1c:b7:8a:b5:44:75:42:35:18:31"
       - run: *base_environment_variables
       - run: *deploy_scripts
       - run:
@@ -173,6 +173,9 @@ workflows:
           requires:
             - build
       - build_and_push_image:
+          context: &moj-forms-context
+            - moj-forms
+            - moj-forms-platform-apps
           requires:
             - test
             - lint
@@ -181,22 +184,28 @@ workflows:
               only:
                 - master
       - deploy_to_test_dev:
+          context: *moj-forms-context
           requires:
             - build_and_push_image
       - deploy_to_test_production:
+          context: *moj-forms-context
           requires:
             - build_and_push_image
       - acceptance_tests:
+          context: *moj-forms-context
           requires:
             - deploy_to_test_dev
             - deploy_to_test_production
       - deploy_to_live_dev:
+          context: *moj-forms-context
           requires:
             - acceptance_tests
       - deploy_to_live_production:
+          context: *moj-forms-context
           requires:
             - acceptance_tests
       - smoke_tests:
+          context: *moj-forms-context
           requires:
             - deploy_to_live_dev
             - deploy_to_live_production
