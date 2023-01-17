@@ -21,7 +21,7 @@ group :development, :test do
   gem 'pry-remote', '~> 0.1.8'
   gem 'rspec-rails'
   gem 'rubocop', '~> 1.41.0'
-  gem 'rubocop-rspec', '~> 2.9'
+  gem 'rubocop-rspec', '~> 2.18'
   gem 'timecop', '~> 0.9.6'
   gem 'webmock', '~> 3.18'
 end
