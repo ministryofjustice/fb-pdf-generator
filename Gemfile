@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.7'
 
 gem 'httparty', '~> 0.21.0'
-gem 'jwt', '~> 2.5'
+gem 'jwt', '~> 2.6'
 gem 'pdfkit', '~> 0.8.7'
 gem 'puma', '~> 6.0.2'
 gem 'rails', '~> 6.1.7', '< 7.0.0'
