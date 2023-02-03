@@ -26,11 +26,11 @@ module Usecase
     def validate_token
       raise Exception::TokenNotValidError, 'iss header must be present' if issuer_claim.nil?
 
-      JWT.decode(token, hmac_secret, true, algorithm: algorithm)
+      JWT.decode(token, hmac_secret, true, algorithm:)
     end
 
     def hmac_secret
-      auth_gateway.hmac_secret(issuer_claim: issuer_claim)
+      auth_gateway.hmac_secret(issuer_claim:)
     end
 
     def issuer_claim
