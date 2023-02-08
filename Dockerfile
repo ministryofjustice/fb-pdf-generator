@@ -19,7 +19,7 @@ RUN gem install bundler
 
 USER appuser
 
-ARG BUNDLE_ARGS='--jobs 4 test development'
+ARG BUNDLE_ARGS='--jobs 4 --deployment --without test development'
 RUN bundle install --no-cache ${BUNDLE_ARGS}
 
 COPY --chown=appuser:appuser . .
