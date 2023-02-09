@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.3'
+ruby '2.7.7'
 
 gem 'httparty', '~> 0.21.0'
 gem 'jwt', '~> 2.5'
