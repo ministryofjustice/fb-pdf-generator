@@ -15,7 +15,6 @@ RUN chown appuser:appuser /app
 
 COPY --chown=appuser:appuser Gemfile Gemfile.lock .ruby-version ./
 
-ENV BUNDLER_VERSION 2.1.4
 RUN gem install bundler
 
 USER appuser
