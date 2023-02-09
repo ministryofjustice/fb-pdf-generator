@@ -2,7 +2,7 @@ require 'webmock/rspec'
 require 'gateway/authentication'
 
 RSpec.describe Gateway::Authentication do
-  subject(:gateway) { described_class.new(token_api_base_url:) }
+  subject(:gateway) { described_class.new(token_api_base_url: token_api_base_url) }
 
   before do
     WebMock.stub_request(:get, "#{token_api_base_url}/service/other_api").to_return(status: 200, body: { token: hmac_secret }.to_json)
