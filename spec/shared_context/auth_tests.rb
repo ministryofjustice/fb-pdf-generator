@@ -1,6 +1,5 @@
 require 'webmock/rspec'
 
-# rubocop:disable Metrics/BlockLength
 RSpec.shared_context 'when authentication required', when_authentication_required: :metadata do
   let(:url) { raise "set the url to test auth vs ie. 'let(:url) { '/v1/complaint'}' " }
 
@@ -35,4 +34,3 @@ RSpec.shared_context 'when authentication required', when_authentication_require
     expect(WebMock).to have_requested(:get, expected_url).once
   end
 end
-# rubocop:enable Metrics/BlockLength
