@@ -145,6 +145,7 @@ jobs:
     docker: *ecr_base_image
     resource_class: large
     steps:
+      - checkout
       - setup_remote_docker: *remote_docker
       - run: *deploy_scripts
       - run:
@@ -154,6 +155,7 @@ jobs:
   smoke_tests:
     docker: *ecr_base_image
     steps:
+      - checkout
       - setup_remote_docker: *remote_docker
       - run: *deploy_scripts
       - run:
