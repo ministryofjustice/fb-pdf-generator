@@ -23,12 +23,12 @@
 #
 # See upgrading guide for more information on how to build a rotator.
 # https://guides.rubyonrails.org/v7.0/upgrading_ruby_on_rails.html
-# Rails.application.config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA256
+Rails.application.config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA256
 
 # Change the digest class for ActiveSupport::Digest.
 # Changing this default means that for example Etags change and
 # various cache keys leading to cache invalidation.
-# Rails.application.config.active_support.hash_digest_class = OpenSSL::Digest::SHA256
+Rails.application.config.active_support.hash_digest_class = OpenSSL::Digest::SHA256
 
 # Don't override ActiveSupport::TimeWithZone.name and use the default Ruby
 # implementation.
@@ -88,14 +88,14 @@ Rails.application.config.active_support.isolation_level = :thread
 Rails.application.config.active_support.use_rfc4122_namespaced_uuids = true
 
 # Change the default headers to disable browsers' flawed legacy XSS protection.
-# Rails.application.config.action_dispatch.default_headers = {
-#   'X-Frame-Options' => 'SAMEORIGIN',
-#   'X-XSS-Protection' => '0',
-#   'X-Content-Type-Options' => 'nosniff',
-#   'X-Download-Options' => 'noopen',
-#   'X-Permitted-Cross-Domain-Policies' => 'none',
-#   'Referrer-Policy' => 'strict-origin-when-cross-origin'
-# }
+Rails.application.config.action_dispatch.default_headers = {
+  'X-Frame-Options' => 'SAMEORIGIN',
+  'X-XSS-Protection' => '0',
+  'X-Content-Type-Options' => 'nosniff',
+  'X-Download-Options' => 'noopen',
+  'X-Permitted-Cross-Domain-Policies' => 'none',
+  'Referrer-Policy' => 'strict-origin-when-cross-origin'
+}
 
 # ** Please read carefully, this must be configured in config/application.rb **
 # Change the format of the cache entry.
