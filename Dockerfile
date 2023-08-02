@@ -20,6 +20,7 @@ RUN gem install bundler
 
 USER appuser
 
+RUN bundle config set force_ruby_platform true
 ARG BUNDLE_ARGS='--jobs 4 --deployment --without test development'
 RUN bundle install --no-cache ${BUNDLE_ARGS}
 
