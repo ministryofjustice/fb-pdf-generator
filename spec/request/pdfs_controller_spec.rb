@@ -151,7 +151,6 @@ RSpec.describe PdfsController, type: :request do
     end
 
     it 'shows date and time in left footer' do
-      # byebug
       analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('10 Oct 2019 15:43:54 UTC')
     end
