@@ -238,7 +238,7 @@ GEM
       listen (>= 2.7, < 4.0)
       spring (>= 4)
     thor (1.2.2)
-    timecop (0.9.6)
+    timecop (0.9.8)
     timeout (0.4.0)
     ttfunk (1.7.0)
     tzinfo (2.0.6)
@@ -277,7 +277,7 @@ DEPENDENCIES
   sentry-ruby (~> 5.10.0)
   spring
   spring-watcher-listen (~> 2.1.0)
-  timecop (~> 0.9.6)
+  timecop (~> 0.9.8)
   webmock (~> 3.18)
   wkhtmltopdf-binary (~> 0.12.6)
 
