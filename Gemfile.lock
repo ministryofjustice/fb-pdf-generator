@@ -67,7 +67,7 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-    addressable (2.8.4)
+    addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     afm (0.2.2)
     ast (2.4.2)
@@ -246,7 +246,7 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.4.2)
-    webmock (3.18.1)
+    webmock (3.19.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -280,7 +280,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.1.0)
   timecop (~> 0.9.8)
-  webmock (~> 3.18)
+  webmock (~> 3.19)
   wkhtmltopdf-binary (~> 0.12.6)
 
 RUBY VERSION
