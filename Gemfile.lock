@@ -147,7 +147,7 @@ GEM
       pry (~> 0.9)
       slop (~> 3.0)
     public_suffix (5.0.3)
-    puma (6.3.1)
+    puma (6.4.0)
       nio4r (~> 2.0)
     racc (1.7.1)
     rack (2.2.8)
@@ -270,7 +270,7 @@ DEPENDENCIES
   pry
   pry-nav (~> 1.0.0)
   pry-remote (~> 0.1.8)
-  puma (~> 6.3.1)
+  puma (~> 6.4.0)
   rails (~> 7.0.0)
   rspec-rails
   rubocop (~> 1.56.2)
