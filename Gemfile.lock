@@ -98,7 +98,7 @@ GEM
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.21.3)
+    loofah (2.21.4)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
@@ -229,10 +229,10 @@ GEM
       rubocop-factory_bot (~> 2.22)
     ruby-progressbar (1.13.0)
     ruby-rc4 (0.1.5)
-    sentry-rails (5.11.0)
+    sentry-rails (5.12.0)
       railties (>= 5.0)
-      sentry-ruby (~> 5.11.0)
-    sentry-ruby (5.11.0)
+      sentry-ruby (~> 5.12.0)
+    sentry-ruby (5.12.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
     slop (3.6.0)
     spring (4.1.1)
@@ -254,7 +254,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     wkhtmltopdf-binary (0.12.6.6)
-    zeitwerk (2.6.11)
+    zeitwerk (2.6.12)
 
 PLATFORMS
   ruby
@@ -275,8 +275,8 @@ DEPENDENCIES
   rspec-rails
   rubocop (~> 1.56.2)
   rubocop-rspec (~> 2.24)
-  sentry-rails (~> 5.11.0)
-  sentry-ruby (~> 5.11.0)
+  sentry-rails (~> 5.12.0)
+  sentry-ruby (~> 5.12.0)
   spring
   spring-watcher-listen (~> 2.1.0)
   timecop (~> 0.9.8)
