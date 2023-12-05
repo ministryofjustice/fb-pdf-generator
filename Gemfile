@@ -35,4 +35,6 @@ end
 
 group :test do
   gem 'pdf-inspector', require: 'pdf/inspector'
+  gem 'simplecov'
+  gem 'simplecov-console', require: false
 end
