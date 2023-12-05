@@ -267,7 +267,7 @@ DEPENDENCIES
   pry-nav (~> 1.0.0)
   pry-remote (~> 0.1.8)
   puma (~> 6.4.0)
-  rails (~> 7.0.8)
+  rails (~> 7.0.6)
   rspec-rails
   rubocop (~> 1.57.2)
   rubocop-rspec (~> 2.25)
