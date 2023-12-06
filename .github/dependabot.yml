@@ -6,12 +6,7 @@ updates:
     interval: daily
     time: "03:00"
     timezone: Europe/London
-  open-pull-requests-limit: 10
-  reviewers:
-  - mattempty
-  - chrispymm
-  - H3ll3m4
-  - StevenLeighton21
+  open-pull-requests-limit: 0
   ignore:
   - dependency-name: rubocop
     versions:
@@ -30,12 +25,7 @@ updates:
     interval: daily
     time: "03:00"
     timezone: Europe/London
-  open-pull-requests-limit: 10
-  reviewers:
-  - mattempty
-  - chrispymm
-  - H3ll3m4
-  - StevenLeighton21
+  open-pull-requests-limit: 0
   ignore:
   - dependency-name: ruby
     versions:
