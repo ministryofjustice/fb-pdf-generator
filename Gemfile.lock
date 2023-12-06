@@ -269,14 +269,12 @@ DEPENDENCIES
   pry-nav (~> 1.0.0)
   pry-remote (~> 0.1.8)
   puma (~> 6.4.0)
-  rails (~> 7.0.0)
+  rails (~> 7.0)
   rspec-rails
   rubocop (~> 1.57.2)
   rubocop-rspec (~> 2.25)
-  sentry-rails (~> 5.14.0)
-  sentry-ruby (~> 5.14.0)
-  spring
-  spring-watcher-listen (~> 2.1.0)
+  sentry-rails (~> 5.14)
+  sentry-ruby (~> 5.14)
   timecop (~> 0.9.8)
   webmock (~> 3.19)
   wkhtmltopdf-binary (~> 0.12.6)
