@@ -268,16 +268,16 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
-  httparty (~> 0.21.0)
+  httparty (~> 0.21)
   jwt (~> 2.7)
-  listen (>= 3.0.5, < 3.9)
+  listen
   pdf-inspector
   pdf-reader
   pdfkit (~> 0.8.7)
   pry
-  pry-nav (~> 1.0.0)
-  pry-remote (~> 0.1.8)
-  puma (~> 6.4.0)
+  pry-nav
+  pry-remote
+  puma (~> 6.4)
   rails (~> 7.0.6)
   rspec-rails
   rubocop
@@ -286,7 +286,7 @@ DEPENDENCIES
   sentry-ruby (~> 5.14)
   simplecov
   simplecov-console
-  webmock (~> 3.19)
+  webmock
   wkhtmltopdf-binary (~> 0.12.6)
 
 RUBY VERSION
