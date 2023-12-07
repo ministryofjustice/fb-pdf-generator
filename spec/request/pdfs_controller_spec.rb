@@ -5,12 +5,12 @@ RSpec.describe PdfsController, type: :request do
     let(:url) { '/v1/pdfs' }
 
     before do
-      Timecop.freeze(Time.parse('2019-10-10 15:43:54 +0000'))
+      travel_to Time.parse('2019-10-10 15:43:54 +0000')
       post url, params: payload, headers: auth_headers, as: :json
     end
 
     after do
-      Timecop.return
+      travel_back
     end
 
     it 'can be requested' do
