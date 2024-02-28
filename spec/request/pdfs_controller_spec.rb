@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe PdfsController, type: :request do
   include_context 'when authentication required' do
     let(:url) { '/v1/pdfs' }
+    let(:analysis) { PDF::Inspector::Text.analyze(response.body) }
 
     before do
       travel_to Time.parse('2019-10-10 15:43:54 +0000')
@@ -101,37 +102,34 @@ RSpec.describe PdfsController, type: :request do
     end
 
     it 'includes subheading' do
-      analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('A copy of your complaint for your records')
     end
 
     it 'includes the questions in the pdf' do
-      analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('First name')
     end
 
     it 'prefers the human readable answer' do
-      analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('Aberdeen Employment Tribunal')
     end
 
     it 'fallbacks to the answers key in the pdf if human_value not defined' do
-      analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('Bob')
     end
 
+    it 'includes the protective marking' do
+      expect(analysis.strings.join).to include('OFFICIAL-SENSITIVE')
+    end
+
     it 'includes the headers in the pdf' do
-      analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('Complain about a court or tribunal')
     end
 
     it 'includes the summary heading when present' do
-      analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('Your Name')
     end
 
     it 'includes the id' do
-      analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include(payload[:submission_id])
     end
 
@@ -141,17 +139,14 @@ RSpec.describe PdfsController, type: :request do
     end
 
     it 'shows page number in right footer' do
-      analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('1/1')
     end
 
     it 'shows page number in left footer' do
-      analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('1786c427-246e-4bb7-90b9-a2e6cfae003f /')
     end
 
     it 'shows date and time in left footer' do
-      analysis = PDF::Inspector::Text.analyze response.body
       expect(analysis.strings.join).to include('10 Oct 2019 15:43:54 UTC')
     end
 
@@ -176,7 +171,6 @@ RSpec.describe PdfsController, type: :request do
       end
 
       it 'shows special characters' do
-        analysis = PDF::Inspector::Text.analyze response.body
         expect(analysis.strings.join).to include('My cat is named £ % ~ ! # $ & ^ * ( ) - _ = + [ ] { } | ; , . ? " < >')
       end
     end
