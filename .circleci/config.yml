@@ -214,7 +214,7 @@ workflows:
             branches:
               only:
                 - main
-                - padding-right
+                - legacy-cleanup
       - deploy_to_test_dev:
           context: *moj-forms-context
           requires:
