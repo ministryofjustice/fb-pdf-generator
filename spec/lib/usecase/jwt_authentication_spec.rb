@@ -1,9 +1,8 @@
 require 'jwt'
 require 'usecase/jwt_authentication'
-require 'gateway/authentication'
 
 RSpec.describe Usecase::JwtAuthentication do
-  let(:auth_gateway) { instance_spy(Gateway::Authentication) }
+  let(:auth_gateway) { instance_spy(Gateway::PublicKey) }
   let(:algorithm) { 'HS256' }
 
   context 'when given no token' do

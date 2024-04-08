@@ -2,11 +2,10 @@ require: rubocop-rspec
 
 AllCops:
   Exclude:
-    - .bundle/**
     - vendor/**/*
     - bin/**
-    - Guardfile
     - config/environments/**
+  SuggestExtensions: false
   NewCops: enable
 
 Style/Documentation:
@@ -25,7 +24,4 @@ Metrics/BlockLength:
   AllowedMethods: ['describe', 'context', 'let', 'include_context']
 
 RSpec/MultipleMemoizedHelpers:
-  Enabled: false
-
-Layout/EmptyLineBetweenDefs:
   Enabled: false
