@@ -1,4 +1,4 @@
-FROM ruby:3.2.2-buster
+FROM ruby:3.2.2-bookworm
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
