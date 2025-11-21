@@ -1,7 +1,11 @@
 version: '3.4'
 
+networks:
+  app-net:
+    name: fb-app-bridge-network
+
 services:
-  app:
+  api:
     # platform: linux/x86_64
     platform: linux/amd64
     build:
@@ -16,3 +20,5 @@ services:
       SENTRY_DSN: ''
     ports:
       - "3000:3000"
+    networks:
+      - app-net
