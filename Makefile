@@ -19,7 +19,7 @@ spec: docker-down docker-build test lint
 
 .PHONY: test
 test: docker-down docker-build
-	$(COMPOSE) run --rm api bundle exec rspec
+	$(COMPOSE) run --rm api env RAILS_ENV=test bundle exec rspec
 
 .PHONY: lint
 lint:
