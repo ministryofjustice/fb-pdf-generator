@@ -6,6 +6,7 @@ networks:
 
 services:
   api:
+    container_name: pdf-generator-api
     # platform: linux/x86_64
     platform: linux/amd64
     build:
