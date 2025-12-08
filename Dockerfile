@@ -22,7 +22,8 @@ USER appuser
 
 RUN bundle config set force_ruby_platform true
 RUN bundle config set deployment true
-ARG BUNDLE_ARGS='--jobs 4 --without test development'
+RUN bundle config set without 'test development'
+ARG BUNDLE_ARGS='--jobs 4'
 RUN bundle install --no-cache ${BUNDLE_ARGS}
 
 COPY --chown=appuser:appuser . .
