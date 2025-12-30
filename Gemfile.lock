@@ -86,7 +86,7 @@ GEM
     ast (2.4.2)
     base64 (0.2.0)
     benchmark (0.4.1)
-    bigdecimal (3.1.8)
+    bigdecimal (3.3.1)
     builder (3.3.0)
     byebug (11.1.3)
     coderay (1.1.3)
@@ -96,7 +96,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    csv (3.3.0)
+    csv (3.3.5)
     date (3.4.1)
     diff-lcs (1.5.1)
     docile (1.4.1)
@@ -108,7 +108,7 @@ GEM
       activesupport (>= 6.1)
     hashdiff (1.1.1)
     hashery (2.1.2)
-    httparty (0.22.0)
+    httparty (0.24.0)
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -140,8 +140,8 @@ GEM
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
     minitest (5.25.1)
-    multi_xml (0.7.1)
-      bigdecimal (~> 3.1)
+    multi_xml (0.8.0)
+      bigdecimal (>= 3.1, < 5)
     mutex_m (0.3.0)
     net-imap (0.5.10)
       date
@@ -314,7 +314,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
-  httparty (~> 0.21)
+  httparty (~> 0.24, >= 0.24.0)
   jwt (~> 2.7)
   listen
   pdf-inspector
@@ -339,4 +339,4 @@ RUBY VERSION
    ruby 3.2.2p53
 
 BUNDLED WITH
-   2.4.10
+   2.4.19
