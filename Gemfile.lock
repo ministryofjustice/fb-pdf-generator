@@ -95,7 +95,7 @@ GEM
     crass (1.0.6)
     csv (3.3.5)
     date (3.5.1)
-    diff-lcs (1.5.1)
+    diff-lcs (1.6.2)
     docile (1.4.1)
     drb (2.2.3)
     erb (6.0.2)
@@ -238,15 +238,15 @@ GEM
     reline (0.6.3)
       io-console (~> 0.5)
     rexml (3.4.4)
-    rspec-core (3.13.1)
+    rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
-    rspec-expectations (3.13.3)
+    rspec-expectations (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-mocks (3.13.1)
+    rspec-mocks (3.13.8)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-rails (7.0.1)
+    rspec-rails (7.0.2)
       actionpack (>= 7.0)
       activesupport (>= 7.0)
       railties (>= 7.0)
@@ -254,7 +254,7 @@ GEM
       rspec-expectations (~> 3.13)
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
-    rspec-support (3.13.1)
+    rspec-support (3.13.7)
     rubocop (1.66.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -272,10 +272,10 @@ GEM
     ruby-progressbar (1.13.0)
     ruby-rc4 (0.1.5)
     securerandom (0.4.1)
-    sentry-rails (5.28.1)
+    sentry-rails (5.20.1)
       railties (>= 5.0)
-      sentry-ruby (~> 5.28.1)
-    sentry-ruby (5.28.1)
+      sentry-ruby (~> 5.20.1)
+    sentry-ruby (5.20.1)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
     simplecov (0.22.0)
@@ -317,7 +317,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
-  httparty (~> 0.21)
+  httparty (~> 0.24.0)
   jwt (~> 2.7)
   listen
   pdf-inspector
@@ -326,13 +326,13 @@ DEPENDENCIES
   pry
   pry-nav
   pry-remote
-  puma (~> 6.4)
+  puma (~> 6.6.1)
   rails (~> 7.2.3.1)
-  rspec-rails
+  rspec-rails (~> 7.0.2)
   rubocop
   rubocop-rspec
-  sentry-rails (~> 5.14)
-  sentry-ruby (~> 5.14)
+  sentry-rails (~> 5.20.0)
+  sentry-ruby (~> 5.20.0)
   simplecov
   simplecov-console
   webmock

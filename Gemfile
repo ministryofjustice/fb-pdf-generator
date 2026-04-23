@@ -3,13 +3,13 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.2.2'
 
-gem 'httparty', '~> 0.21'
+gem 'httparty', '~> 0.24.0'
 gem 'jwt', '~> 2.7'
 gem 'pdfkit', '~> 0.8.7'
-gem 'puma', '~> 6.4'
+gem 'puma', '~> 6.6.1'
 gem 'rails', '~> 7.2.3.1'
-gem 'sentry-rails', '~> 5.14'
-gem 'sentry-ruby', '~> 5.14'
+gem 'sentry-rails', '~> 5.20.0'
+gem 'sentry-ruby', '~> 5.20.0'
 gem 'wkhtmltopdf-binary', '~> 0.12.6'
 
 group :development, :test do
@@ -19,7 +19,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'pry-remote'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 7.0.2'
   gem 'rubocop'
   gem 'rubocop-rspec'
   gem 'webmock'
