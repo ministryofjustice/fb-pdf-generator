@@ -1,4 +1,4 @@
-FROM ruby:3.1.3-buster
+FROM ruby:3.2.2-bookworm
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
@@ -20,7 +20,12 @@ RUN gem install bundler
 
 USER appuser
 
-ARG BUNDLE_ARGS='--jobs 4 --deployment --without test development'
+RUN bundle config set force_ruby_platform true
+RUN bundle config set deployment true
+
+ARG BUNDLE_WITHOUT='test development'
+RUN bundle config set without ${BUNDLE_WITHOUT}
+ARG BUNDLE_ARGS='--jobs 4'
 RUN bundle install --no-cache ${BUNDLE_ARGS}
 
 COPY --chown=appuser:appuser . .

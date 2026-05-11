@@ -12,23 +12,27 @@ docker-build:
 .PHONY: shell
 shell: docker-down docker-build
 	$(COMPOSE) up -d
-	$(COMPOSE) exec app bash
+	$(COMPOSE) exec api bash
 
 .PHONY: spec
 spec: docker-down docker-build test lint
 
 .PHONY: test
 test: docker-down docker-build
-	$(COMPOSE) run --rm app bundle exec rspec
+	$(COMPOSE) run --rm api env RAILS_ENV=test bundle exec rspec
 
 .PHONY: lint
 lint:
-	$(COMPOSE) run --rm app bundle exec rubocop
+	$(COMPOSE) run --rm api bundle exec rubocop
 
 .PHONY: fix
 fix:
-	$(COMPOSE) run --rm app bundle exec rubocop -a
+	$(COMPOSE) run --rm api bundle exec rubocop -a
 
 .PHONY: serve
 serve: docker-down docker-build
-	$(COMPOSE) run --rm --service-ports app
+	$(COMPOSE) run --rm --service-ports api
+
+.PHONY: setup
+setup: docker-down docker-build
+	$(COMPOSE) up -d

@@ -1,6 +1,8 @@
 require 'rails_helper'
 require 'webmock/rspec'
 
+CONFIGURATION = 'configuration'.freeze
+
 RSpec.describe ApplicationController, type: :controller do
   describe '#authorize_request requires jwt token' do
     # test controller to test ApplicationController logic
@@ -50,7 +52,7 @@ RSpec.describe ApplicationController, type: :controller do
         }.to_json
       end
 
-      let(:configuration) { instance_double('configuration', auth_endpoint: 'http://example.com') }
+      let(:configuration) { instance_double(CONFIGURATION, auth_endpoint: 'http://example.com') }
 
       before do
         allow(Rails).to receive(:configuration).and_return(configuration)
