@@ -1,4 +1,4 @@
-FROM ruby:3.2.2-bookworm
+FROM ruby:3.3.11-bookworm
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
@@ -22,6 +22,7 @@ USER appuser
 
 RUN bundle config set force_ruby_platform true
 RUN bundle config set deployment true
+run bundle config set --local frozen false
 
 ARG BUNDLE_WITHOUT='test development'
 RUN bundle config set without ${BUNDLE_WITHOUT}
