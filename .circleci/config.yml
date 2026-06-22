@@ -224,7 +224,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - CDPTKAN-1038-rerun-failed-tests
       - deploy_to_test_dev:
           context: *moj-forms-context
           requires:
