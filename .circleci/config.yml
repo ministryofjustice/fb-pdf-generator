@@ -194,21 +194,21 @@ jobs:
             cd fb-acceptance-tests/integration
             cp tests.env.ci tests.env
 
-            echo "GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}" >> ./integration/tests.env
-            echo "GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}" >> ./integration/tests.env
-            echo "GOOGLE_REFRESH_TOKEN='${GOOGLE_REFRESH_TOKEN}'" >> ./integration/tests.env
+            echo "GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}" >> tests.env
+            echo "GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}" >> tests.env
+            echo "GOOGLE_REFRESH_TOKEN='${GOOGLE_REFRESH_TOKEN}'" >> tests.env
 
-            echo "NEW_RUNNER_ACCEPTANCE_TEST_USER=${NEW_RUNNER_ACCEPTANCE_TEST_USER}" >> ./integration/tests.env
-            echo "NEW_RUNNER_ACCEPTANCE_TEST_PASSWORD=${NEW_RUNNER_ACCEPTANCE_TEST_PASSWORD}" >> ./integration/tests.env
+            echo "NEW_RUNNER_ACCEPTANCE_TEST_USER=${NEW_RUNNER_ACCEPTANCE_TEST_USER}" >> tests.env
+            echo "NEW_RUNNER_ACCEPTANCE_TEST_PASSWORD=${NEW_RUNNER_ACCEPTANCE_TEST_PASSWORD}" >> tests.env
 
-            echo "MS_LIST_ID=${MS_LIST_ID}" >> ./integration/tests.env
-            echo "MS_SITE_ID=${MS_SITE_ID}" >> ./integration/tests.env
-            echo "MS_OAUTH_URL=${MS_OAUTH_URL}" >> ./integration/tests.env
-            echo "MS_ADMIN_APP_SECRET=${MS_ADMIN_APP_SECRET}" >> ./integration/tests.env
-            echo "MS_ADMIN_APP_ID=${MS_ADMIN_APP_ID}" >> ./integration/tests.env
+            echo "MS_LIST_ID=${MS_LIST_ID}" >> tests.env
+            echo "MS_SITE_ID=${MS_SITE_ID}" >> tests.env
+            echo "MS_OAUTH_URL=${MS_OAUTH_URL}" >> tests.env
+            echo "MS_ADMIN_APP_SECRET=${MS_ADMIN_APP_SECRET}" >> tests.env
+            echo "MS_ADMIN_APP_ID=${MS_ADMIN_APP_ID}" >> tests.env
 
-            echo "SMOKE_TEST_USER=${SMOKE_TEST_USER}" >> ./integration/tests.env
-            echo "SMOKE_TEST_PASSWORD=${SMOKE_TEST_PASSWORD}" >> ./integration/tests.env
+            echo "SMOKE_TEST_USER=${SMOKE_TEST_USER}" >> tests.env
+            echo "SMOKE_TEST_PASSWORD=${SMOKE_TEST_PASSWORD}" >> tests.env
 
             bundle install
 
@@ -277,15 +277,15 @@ workflows:
           context: *moj-forms-context
           requires:
             - build_and_push_image
-      - deploy_to_test_production:
-          context: *moj-forms-context
-          requires:
-            - build_and_push_image
+#      - deploy_to_test_production:
+#          context: *moj-forms-context
+#          requires:
+#            - build_and_push_image
       - acceptance_tests:
           context: *moj-forms-context
           requires:
             - deploy_to_test_dev
-            - deploy_to_test_production
+#            - deploy_to_test_production
       - smoke_tests:
           context: *moj-forms-context
           requires:
