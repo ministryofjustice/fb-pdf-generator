@@ -42,7 +42,11 @@ jobs:
       - ruby/install-deps
       - run:
           name: test
-          command: bundle exec rspec
+          command: |
+            mkdir -p ~/test-results/rspec
+            bundle exec rspec --format progress --format RspecJunitFormatter --out ~/test-results/rspec/results.xml
+      - store_test_results:
+          path: ~/test-results
       - slack/status: *slack_status
   lint:
     docker: *ruby_image
@@ -174,7 +178,11 @@ jobs:
       - run: *deploy_scripts
       - run:
           name: Run acceptance tests
-          command: "./deploy-scripts/bin/acceptance_tests"
+          command: |
+            mkdir -p ~/test-results/acceptance
+            circleci tests glob "spec/**/*_spec.rb" | circleci tests run --command="xargs ./deploy-scripts/bin/acceptance_tests --format progress --format RspecJunitFormatter --out ~/test-results/acceptance/results.xml" --verbose
+      - store_test_results:
+          path: ~/test-results
       - slack/status: *slack_status
   smoke_tests:
     docker: *ecr_base_image
@@ -184,7 +192,11 @@ jobs:
       - run: *deploy_scripts
       - run:
           name: Run smoke tests
-          command: "./deploy-scripts/bin/smoke_tests"
+          command: |
+            mkdir -p ~/test-results/smoke
+            circleci tests glob "spec/**/*_spec.rb" | circleci tests run --command="xargs ./deploy-scripts/bin/smoke_tests --format progress --format RspecJunitFormatter --out ~/test-results/smoke/results.xml" --verbose
+      - store_test_results:
+          path: ~/test-results
       - slack/status: *slack_status
 
 workflows:

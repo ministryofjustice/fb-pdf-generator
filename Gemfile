@@ -20,6 +20,7 @@ group :development, :test do
   gem 'pry-nav'
   gem 'pry-remote'
   gem 'rspec-rails', '~> 7.0.2'
+  gem 'rspec_junit_formatter'
   gem 'rubocop'
   gem 'rubocop-rspec'
   gem 'webmock'
