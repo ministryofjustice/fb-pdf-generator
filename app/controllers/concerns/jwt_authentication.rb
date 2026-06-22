@@ -1,5 +1,6 @@
 module JwtAuthentication
   extend ActiveSupport::Concern
+
   JWT_ALGORITHM = 'RS256'.freeze
 
   included do
