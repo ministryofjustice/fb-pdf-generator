@@ -240,11 +240,7 @@ jobs:
       - run: *deploy_scripts
       - run:
           name: Run smoke tests
-          command: |
-            mkdir -p ~/test-results/smoke
-            circleci tests glob "spec/**/*_spec.rb" | circleci tests run --command="xargs ./deploy-scripts/bin/smoke_tests --format progress --format RspecJunitFormatter --out ~/test-results/smoke/results.xml" --verbose
-      - store_test_results:
-          path: ~/test-results
+          command: "./deploy-scripts/bin/smoke_tests"
       - slack/status: *slack_status
 
 workflows:
