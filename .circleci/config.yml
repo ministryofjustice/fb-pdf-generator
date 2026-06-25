@@ -3,6 +3,7 @@ orbs:
   slack: circleci/slack@3.4.2
   ruby: circleci/ruby@1.4.0
   aws-cli: circleci/aws-cli@4.0.0
+  browser-tools: circleci/browser-tools@1.4.7
 
 jobs:
   login-to-aws:
@@ -42,7 +43,11 @@ jobs:
       - ruby/install-deps
       - run:
           name: test
-          command: bundle exec rspec
+          command: |
+            mkdir -p ~/test-results/rspec
+            bundle exec rspec --format progress --format RspecJunitFormatter --out ~/test-results/rspec/results.xml
+      - store_test_results:
+          path: ~/test-results
       - slack/status: *slack_status
   lint:
     docker: *ruby_image
@@ -166,16 +171,67 @@ jobs:
           failure_message: ":alert:  Failed to deploy to Live Production  :try_not_to_cry:"
           include_job_number_field: false
   acceptance_tests:
-    docker: *ecr_base_image
-    resource_class: large
+    docker: *ruby_image
     steps:
       - checkout
-      - setup_remote_docker: *remote_docker
-      - run: *deploy_scripts
+      - run: sudo apt-get update
+      - browser-tools/install-chrome:
+          chrome-version: 138.0.7204.183
+      - browser-tools/install-chromedriver
+      - run:
+          name: Check browser tools install
+          command: |
+            google-chrome --version
+            chromedriver --version
+      - run: mkdir ~/rspec
       - run:
           name: Run acceptance tests
-          command: "./deploy-scripts/bin/acceptance_tests"
+          environment:
+            CI_MODE: 'true'
+          command: |
+            git clone https://github.com/ministryofjustice/fb-acceptance-tests
+
+            cd fb-acceptance-tests/integration
+            cp tests.env.ci tests.env
+
+            echo "GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}" >> tests.env
+            echo "GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}" >> tests.env
+            echo "GOOGLE_REFRESH_TOKEN='${GOOGLE_REFRESH_TOKEN}'" >> tests.env
+
+            echo "NEW_RUNNER_ACCEPTANCE_TEST_USER=${NEW_RUNNER_ACCEPTANCE_TEST_USER}" >> tests.env
+            echo "NEW_RUNNER_ACCEPTANCE_TEST_PASSWORD=${NEW_RUNNER_ACCEPTANCE_TEST_PASSWORD}" >> tests.env
+
+            echo "MS_LIST_ID=${MS_LIST_ID}" >> tests.env
+            echo "MS_SITE_ID=${MS_SITE_ID}" >> tests.env
+            echo "MS_OAUTH_URL=${MS_OAUTH_URL}" >> tests.env
+            echo "MS_ADMIN_APP_SECRET=${MS_ADMIN_APP_SECRET}" >> tests.env
+            echo "MS_ADMIN_APP_ID=${MS_ADMIN_APP_ID}" >> tests.env
+
+            echo "SMOKE_TEST_USER=${SMOKE_TEST_USER}" >> tests.env
+            echo "SMOKE_TEST_PASSWORD=${SMOKE_TEST_PASSWORD}" >> tests.env
+
+            bundle install
+
+            circleci tests glob "spec/features/v2/**/*_spec.rb" | circleci tests run --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml" --verbose --split-by=timings
+      - store_test_results:
+          path: ~/rspec
       - slack/status: *slack_status
+
+#  acceptance_tests:
+#    docker: *ecr_base_image
+#    resource_class: large
+#    steps:
+#      - checkout
+#      - setup_remote_docker: *remote_docker
+#      - run: *deploy_scripts
+#      - run:
+#          name: Run acceptance tests
+#          command: |
+#            mkdir -p ~/test-results/acceptance
+#            circleci tests glob "spec/**/*_spec.rb" | circleci tests run --command="xargs ./deploy-scripts/bin/acceptance_tests --format progress --format RspecJunitFormatter --out ~/test-results/acceptance/results.xml" --verbose
+#      - store_test_results:
+#          path: ~/test-results
+#      - slack/status: *slack_status
   smoke_tests:
     docker: *ecr_base_image
     steps:
@@ -212,37 +268,21 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - CDPTKAN-1038-rerun-failed-tests
       - deploy_to_test_dev:
           context: *moj-forms-context
           requires:
             - build_and_push_image
-      - deploy_to_test_production:
-          context: *moj-forms-context
-          requires:
-            - build_and_push_image
+#      - deploy_to_test_production:
+#          context: *moj-forms-context
+#          requires:
+#            - build_and_push_image
       - acceptance_tests:
           context: *moj-forms-context
           requires:
             - deploy_to_test_dev
-            - deploy_to_test_production
-      - production_deploy_approval:
-          type: approval
-          requires:
-            - acceptance_tests
-          filters:
-            branches:
-              only: main
-      - deploy_to_live_dev:
-          context: *moj-forms-context
-          requires:
-            - production_deploy_approval
-      - deploy_to_live_production:
-          context: *moj-forms-context
-          requires:
-            - production_deploy_approval
+#            - deploy_to_test_production
       - smoke_tests:
           context: *moj-forms-context
           requires:
-            - deploy_to_live_dev
-            - deploy_to_live_production
+            - acceptance_tests
