@@ -212,37 +212,38 @@ workflows:
           filters:
             branches:
               only:
-                - main
-      - deploy_to_test_dev:
-          context: *moj-forms-context
-          requires:
-            - build_and_push_image
-      - deploy_to_test_production:
-          context: *moj-forms-context
-          requires:
-            - build_and_push_image
+                - CDPTKAN-1038-rerun-failed-acceptance-tests
+#      - deploy_to_test_dev:
+#          context: *moj-forms-context
+#          requires:
+#            - build_and_push_image
+#      - deploy_to_test_production:
+#          context: *moj-forms-context
+#          requires:
+#            - build_and_push_image
       - acceptance_tests:
           context: *moj-forms-context
           requires:
-            - deploy_to_test_dev
-            - deploy_to_test_production
-      - production_deploy_approval:
-          type: approval
-          requires:
-            - acceptance_tests
-          filters:
-            branches:
-              only: main
-      - deploy_to_live_dev:
-          context: *moj-forms-context
-          requires:
-            - production_deploy_approval
-      - deploy_to_live_production:
-          context: *moj-forms-context
-          requires:
-            - production_deploy_approval
-      - smoke_tests:
-          context: *moj-forms-context
-          requires:
-            - deploy_to_live_dev
-            - deploy_to_live_production
+            - build_and_push_image
+#            - deploy_to_test_dev
+#            - deploy_to_test_production
+#      - production_deploy_approval:
+#          type: approval
+#          requires:
+#            - acceptance_tests
+#          filters:
+#            branches:
+#              only: main
+#      - deploy_to_live_dev:
+#          context: *moj-forms-context
+#          requires:
+#            - production_deploy_approval
+#      - deploy_to_live_production:
+#          context: *moj-forms-context
+#          requires:
+#            - production_deploy_approval
+#      - smoke_tests:
+#          context: *moj-forms-context
+#          requires:
+#            - deploy_to_live_dev
+#            - deploy_to_live_production
