@@ -1,4 +1,4 @@
-FROM ruby:3.3.11-slim-trixie
+FROM ruby:3.4.9-slim-trixie
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
