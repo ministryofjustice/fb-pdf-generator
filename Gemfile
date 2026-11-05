@@ -5,6 +5,7 @@ ruby file: '.ruby-version'
 
 gem 'httparty', '~> 0.24.0'
 gem 'jwt', '~> 2.7'
+gem 'ostruct'
 gem 'pdfkit', '~> 0.8.7'
 gem 'puma', '~> 6.6.1'
 gem 'rails', '~> 8.1.3.1'

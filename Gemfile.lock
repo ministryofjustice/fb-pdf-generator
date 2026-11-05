@@ -158,6 +158,7 @@ GEM
     nokogiri (1.19.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
+    ostruct (0.6.3)
     parallel (2.1.0)
     parser (3.3.11.1)
       ast (~> 2.4.1)
@@ -332,6 +333,7 @@ DEPENDENCIES
   httparty (~> 0.24.0)
   jwt (~> 2.7)
   listen
+  ostruct
   pdf-inspector
   pdf-reader
   pdfkit (~> 0.8.7)
@@ -352,7 +354,7 @@ DEPENDENCIES
   wkhtmltopdf-binary (~> 0.12.6)
 
 RUBY VERSION
-   ruby 4.0.9p0
+  ruby 4.0.9p0
 
 BUNDLED WITH
-   4.0.24
+  4.0.24
