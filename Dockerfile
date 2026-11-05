@@ -1,4 +1,4 @@
-FROM ruby:3.4.9-slim-trixie
+FROM ruby:4.0.9-slim-trixie
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
@@ -29,7 +29,7 @@ RUN chown appuser:appuser /app
 
 COPY --chown=appuser:appuser Gemfile Gemfile.lock .ruby-version ./
 
-ENV BUNDLER_VERSION=2.1.4
+ENV BUNDLER_VERSION=4.0.24
 RUN gem install bundler
 
 USER appuser

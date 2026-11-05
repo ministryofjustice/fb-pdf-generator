@@ -7,8 +7,12 @@ orbs:
 
 jobs:
   login-to-aws:
+    parameters:
+      ruby-version:
+        type: string
+        default: "4.0.9"
     docker: &docker_image
-      - image: "cimg/ruby:3.4.9-node"
+      - image: "cimg/ruby:<< parameters.ruby-version >>-node"
     steps:
       - checkout
       - aws-cli/setup:
@@ -26,8 +30,12 @@ jobs:
           paths:
             - bash.env
   build:
+    parameters:
+      ruby-version:
+        type: string
+        default: "4.0.9"
     docker: &ruby_image
-      - image: "cimg/ruby:3.4.9"
+      - image: "cimg/ruby:<< parameters.ruby-version >>"
     steps:
       - checkout
       - ruby/install-deps
@@ -37,6 +45,10 @@ jobs:
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
   test:
+    parameters:
+      ruby-version:
+        type: string
+        default: "4.0.9"
     docker: *ruby_image
     steps:
       - checkout
@@ -50,6 +62,10 @@ jobs:
           path: ~/test-results
       - slack/status: *slack_status
   lint:
+    parameters:
+      ruby-version:
+        type: string
+        default: "4.0.9"
     docker: *ruby_image
     steps:
       - checkout
@@ -171,6 +187,10 @@ jobs:
           failure_message: ":alert:  Failed to deploy to Live Production  :try_not_to_cry:"
           include_job_number_field: false
   acceptance_tests:
+    parameters:
+      ruby-version:
+        type: string
+        default: "4.0.9"
     docker: *ruby_image
     resource_class: large
     steps:
