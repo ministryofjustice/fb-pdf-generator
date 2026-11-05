@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.4.9'
+ruby file: '.ruby-version'
 
 gem 'httparty', '~> 0.24.0'
 gem 'jwt', '~> 2.7'
+gem 'ostruct'
 gem 'pdfkit', '~> 0.8.7'
 gem 'puma', '~> 7.2.1'
 gem 'rails', '~> 8.1.3.1'
@@ -19,6 +20,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'pry-remote'
+  gem 'readline'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails', '~> 7.0.2'
   gem 'rubocop'

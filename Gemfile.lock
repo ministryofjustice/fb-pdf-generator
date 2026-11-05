@@ -158,6 +158,7 @@ GEM
     nokogiri (1.19.6)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
+    ostruct (0.6.3)
     parallel (2.1.0)
     parser (3.3.11.1)
       ast (~> 2.4.1)
@@ -237,6 +238,8 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
+    readline (0.0.4)
+      reline
     regexp_parser (2.12.0)
     reline (0.6.3)
       io-console (~> 0.5)
@@ -332,6 +335,7 @@ DEPENDENCIES
   httparty (~> 0.24.0)
   jwt (~> 2.7)
   listen
+  ostruct
   pdf-inspector
   pdf-reader
   pdfkit (~> 0.8.7)
@@ -340,6 +344,7 @@ DEPENDENCIES
   pry-remote
   puma (~> 7.2.1)
   rails (~> 8.1.3.1)
+  readline
   rspec-rails (~> 7.0.2)
   rspec_junit_formatter
   rubocop
@@ -352,7 +357,7 @@ DEPENDENCIES
   wkhtmltopdf-binary (~> 0.12.6)
 
 RUBY VERSION
-   ruby 3.4.9p82
+  ruby 4.0.9p0
 
 BUNDLED WITH
-   2.6.9
+  4.0.24
